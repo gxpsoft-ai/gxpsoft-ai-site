@@ -453,6 +453,49 @@ footer:hover {
     grid-template-columns: 1fr;
     gap: 16px;
   }
+
+  /* Responsive Tour Container */
+  .tour-container {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .tour-sidebar {
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    border-bottom: 1px solid var(--border-color);
+    flex-direction: row;
+    flex: none;
+    gap: 16px;
+    padding-bottom: 12px;
+    overflow-x: auto;
+  }
+
+  .tour-tab {
+    border-bottom: 2px solid transparent;
+    border-left: none;
+    padding: 4px 0 8px;
+  }
+
+  .tour-tab:hover {
+    padding-left: 0;
+  }
+
+  .tour-tab.active {
+    border-left: none;
+    border-bottom: 2px solid var(--text-color);
+    padding-left: 0;
+  }
+
+  .lightbox {
+    padding: 16px;
+  }
+
+  .lightbox-close {
+    top: 20px;
+    right: 20px;
+  }
 }
 
 /* Theme Switcher Styles */
@@ -489,4 +532,278 @@ footer:hover {
 .theme-divider {
   color: var(--border-color);
   user-select: none;
+}
+
+/* Products Dropdown & Navigation Styles */
+#mainNav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 4px 8px;
+  transition: color 0.2s ease;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--text-color);
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-trigger {
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  transition: color 0.2s ease;
+}
+
+.dropdown-trigger:hover, .dropdown-trigger.active, .dropdown:hover .dropdown-trigger {
+  color: var(--text-color);
+}
+
+.dropdown-trigger.active {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  min-width: 140px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.4);
+  z-index: 100;
+  padding: 4px 0;
+  margin-top: 8px;
+}
+
+.dropdown-content::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background: transparent;
+}
+
+.dropdown-content a {
+  color: var(--text-muted);
+  padding: 8px 16px;
+  text-decoration: none;
+  display: block;
+  font-size: 13px;
+  font-family: var(--font-mono);
+  text-align: center;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.dropdown-content a:hover, .dropdown-content a.active {
+  background-color: var(--card-bg-hover);
+  color: var(--text-color);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-arrow {
+  font-size: 9px;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+
+/* Interactive Tour Container */
+.tour-container {
+  gap: 40px;
+  margin-top: 16px;
+  display: flex;
+}
+
+.tour-sidebar {
+  flex-direction: column;
+  flex: 0 0 220px;
+  gap: 8px;
+  display: flex;
+}
+
+.tour-tab {
+  font-family: var(--font-mono);
+  color: var(--text-color);
+  opacity: 0.6;
+  cursor: pointer;
+  text-align: left;
+  background: none;
+  border: none;
+  border-left: 2px solid transparent;
+  outline: none;
+  padding: 6px 0 6px 12px;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.tour-tab:hover {
+  opacity: 1;
+  padding-left: 16px;
+}
+
+.tour-tab.active {
+  opacity: 1;
+  border-left: 2px solid var(--text-color);
+  padding-left: 16px;
+  font-weight: 700;
+}
+
+.tour-stage {
+  flex-direction: column;
+  flex: 1;
+  gap: 16px;
+  min-width: 0;
+  display: flex;
+}
+
+.screenshot-wrapper {
+  cursor: zoom-in;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.screenshot-wrapper:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+}
+
+.tour-image {
+  opacity: 1;
+  width: 100%;
+  height: auto;
+  transition: opacity 0.15s ease-in-out;
+  display: block;
+}
+
+.tour-image.transitioning {
+  opacity: 0.15;
+}
+
+.tour-description {
+  padding-top: 4px;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.tour-description.transitioning {
+  opacity: 0.15;
+}
+
+.tour-detail-title {
+  font-family: var(--font-serif);
+  margin-bottom: 8px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.tour-detail-text {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* Lightbox overlay and popup */
+.lightbox {
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  background-color: rgba(9, 9, 11, 0.95);
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+  transition: opacity 0.25s ease;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+html[data-theme="light"] .lightbox {
+  background-color: rgba(255, 255, 255, 0.96);
+}
+
+.lightbox.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox-content {
+  cursor: zoom-out;
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  max-width: 90%;
+  max-height: 90%;
+  padding: 12px;
+  transition: transform 0.25s ease;
+  transform: scale(0.95);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+html[data-theme="light"] .lightbox-content {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.lightbox.active .lightbox-content {
+  transform: scale(1);
+}
+
+.lightbox-image {
+  border-radius: 4px;
+  max-width: 100%;
+  height: auto;
+  max-height: 80vh;
+  display: block;
+}
+
+.lightbox-close {
+  font-family: var(--font-mono);
+  cursor: pointer;
+  text-underline-offset: 4px;
+  opacity: 0.6;
+  background: none;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  text-decoration: underline;
+  color: var(--text-color);
+  transition: opacity 0.2s ease;
+  position: absolute;
+  top: 30px;
+  right: 40px;
+}
+
+.lightbox-close:hover {
+  opacity: 1;
 }

@@ -20,17 +20,28 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () 
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Highlight active page link based on path (kept for compatibility)
+  // Highlight active page link based on path
   const currentPath = window.location.pathname;
   const navLinks = document.querySelectorAll("nav a");
   navLinks.forEach(link => {
     const href = link.getAttribute("href");
-    if (currentPath === href || (href !== "/" && currentPath.includes(href))) {
+    const isHome = href === "index.html" || href === "/";
+    const isCurrentHome = currentPath === "/" || currentPath.includes("index.html");
+    
+    if ((isHome && isCurrentHome) || (!isHome && href !== "#" && currentPath.includes(href))) {
       link.classList.add("active");
     } else {
       link.classList.remove("active");
     }
   });
+
+  // Highlight products dropdown trigger if on a product page
+  if (currentPath.includes("open911") || currentPath.includes("resumerx")) {
+    const productsTrigger = document.getElementById("productsTrigger");
+    if (productsTrigger) {
+      productsTrigger.classList.add("active");
+    }
+  }
 
   // 2. Theme switch button listeners
   const themeButtons = document.querySelectorAll(".theme-btn");
