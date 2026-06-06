@@ -43,14 +43,23 @@
               <a href="resumerx.html" id="linkResumeRx">ResumeRx</a>
             </div>
           </div>
+          <a href="https://demo.gxpsoft.ai" class="nav-link" id="navDemo" target="_blank" rel="noopener noreferrer">Demo</a>
         </nav>
 
-        <div class="theme-switcher" id="themeSwitcher">
-          <button class="theme-btn" data-theme-val="light" id="btnThemeLight">light</button>
-          <span class="theme-divider">/</span>
-          <button class="theme-btn" data-theme-val="dark" id="btnThemeDark">dark</button>
-          <span class="theme-divider">/</span>
-          <button class="theme-btn" data-theme-val="system" id="btnThemeSystem">system</button>
+        <div class="theme-dropdown" id="themeDropdown">
+          <button class="theme-trigger" id="themeTrigger" aria-label="Toggle Theme">
+            <svg class="theme-icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 3v18" />
+              <path d="M12 3a9 9 0 0 1 0 18Z" fill="currentColor" />
+            </svg>
+            <span class="theme-arrow">▼</span>
+          </button>
+          <div class="theme-dropdown-content" id="themeDropdownContent">
+            <button class="theme-dropdown-btn theme-btn" data-theme-val="light" id="btnThemeLight">Light</button>
+            <button class="theme-dropdown-btn theme-btn" data-theme-val="dark" id="btnThemeDark">Dark</button>
+            <button class="theme-dropdown-btn theme-btn" data-theme-val="system" id="btnThemeSystem">System</button>
+          </div>
         </div>
       </header>
 
