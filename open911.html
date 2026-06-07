@@ -115,7 +115,7 @@
               <div class="screenshot-wrapper" id="tourScreenshotWrapper" role="button" tabindex="0">
                 <img
                   id="tourImage"
-                  src="https://saram.io/images/open911-dashboard-screenshot.png"
+                  src="/images/open911_dashboard.png"
                   alt="Open911 System Dashboard"
                   class="tour-image"
                 />
@@ -172,7 +172,7 @@
     <div class="lightbox" id="lightbox">
       <button class="lightbox-close" id="lightboxClose">Close [Esc]</button>
       <div class="lightbox-content">
-        <img src="https://saram.io/images/open911-dashboard-screenshot.png" alt="Open911 System Dashboard" class="lightbox-image" id="lightboxImage" />
+        <img src="/images/open911_dashboard.png" alt="Open911 System Dashboard" class="lightbox-image" id="lightboxImage" />
       </div>
     </div>
 
@@ -182,47 +182,47 @@
       const tourData = {
         dashboard: {
           title: "System Dashboard",
-          src: "https://saram.io/images/open911-dashboard-screenshot.png",
+          src: "/images/open911_dashboard.png",
           desc: "The central command hub for Open911. It displays active and unresolved alarms, live connection statuses for OPC UA servers, notification gateway health, and currently active on-call staff. A clean layout ensures that critical operational statuses are visible at a glance without clutter."
         },
         "tag-explorer": {
           title: "OPC UA Tag Explorer",
-          src: "https://saram.io/images/open911-tag-explorer-screenshot.png",
+          src: "/images/open911_tag_explorer.png",
           desc: "An intuitive tag browser that connects directly to your OPC UA server. Engineers can browse the OPC UA namespace hierarchical structure, select specific tags, and configure alarm conditions (such as high/low limits, status changes, or quality changes) without needing to manually copy node IDs."
         },
         "gateway-settings": {
           title: "Gateway Settings",
-          src: "https://saram.io/images/open911-gateway-settings-screenshot.png",
+          src: "/images/open911_gateway_settings.png",
           desc: "The communication engine configuration page. Open911 supports multiple notification channels including SMTP Email, SMS text gateways, Voice/Phone calls (via Twilio or local hardware modems), and OPC UA feedback loops. Gateways can be configured with failover paths to ensure alert delivery."
         },
         contacts: {
           title: "Contact Directory",
-          src: "https://saram.io/images/open911-contacts-screenshot.png",
+          src: "/images/open911_contacts.png",
           desc: "A central registry for all system operators and technicians. Define each individual's contact information, preferred communication channels (e.g., SMS first, then Voice), and specific connection parameters. Individual contact details are encrypted in compliance with internal security guidelines."
         },
         "user-groups": {
           title: "User Groups",
-          src: "https://saram.io/images/open911-user-groups-screenshot.png",
+          src: "/images/open911_user_groups.png",
           desc: "Organizes operators and technicians into logical groups based on departments, responsibilities, or physical plant zones (e.g., \"HVAC Technicians\", \"Line 3 Operators\"). User groups simplify alert routing, allowing alarms to be sent to entire teams simultaneously."
         },
         "on-calls": {
           title: "On-Call Scheduling",
-          src: "https://saram.io/images/open911-on-calls-screenshot.png",
+          src: "/images/open911_on_calls.png",
           desc: "A comprehensive calendar and shift planner to define who is active. Open911 references these schedules in real-time, ensuring alerts are only sent to personnel currently on shift, avoiding notification fatigue for off-duty employees."
         },
         "escalation-policy": {
           title: "Alarm Escalation Policies",
-          src: "https://saram.io/images/open911-escalation-policy-screenshot.png",
+          src: "/images/open911_escalation_policy.png",
           desc: "Defines the automated sequence of notification steps when an alarm is triggered. For example, the policy can email Operator A, wait 5 minutes, and if the alarm is not acknowledged, escalate by sending an SMS to Operator B, and finally place a phone call to the Shift Supervisor."
         },
         "system-diag": {
           title: "System Diagnostics",
-          src: "https://saram.io/images/open911-system-diag-screenshot.png",
+          src: "/images/open911_system_diag.png",
           desc: "Real-time diagnostic panel displaying active telemetry, connection status to OPC UA servers, API performance, and memory usage. System diagnostics allow administrators to quickly troubleshoot networking issues and trace notification delivery status."
         },
         "audit-trail": {
           title: "GxP Audit Trail",
-          src: "https://saram.io/images/open911-audit-trail-screenshot.png",
+          src: "/images/open911_audit_trail.png",
           desc: "A tamper-evident, chronologically sequenced event log required for regulatory compliance (FDA 21 CFR Part 11). It records all alarm triggers, responder deliveries, user acknowledgments, configuration changes, and system restarts with high-precision timestamps."
         }
       };
