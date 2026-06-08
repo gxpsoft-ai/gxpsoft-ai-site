@@ -608,7 +608,13 @@ html[data-theme="light"] .theme-dropdown-content {
   font-weight: 700;
 }
 
-.theme-dropdown:hover .theme-dropdown-content {
+@media (min-width: 769px) {
+  .theme-dropdown:hover .theme-dropdown-content {
+    display: block;
+  }
+}
+
+.theme-dropdown.open .theme-dropdown-content {
   display: block;
 }
 

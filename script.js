@@ -43,7 +43,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // 2. Theme switch button listeners
+  // 2. Theme switcher dropdown toggle and close behavior
+  const themeDropdown = document.getElementById("themeDropdown");
+  const themeTrigger = document.getElementById("themeTrigger");
+
+  if (themeTrigger && themeDropdown) {
+    themeTrigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      themeDropdown.classList.toggle("open");
+    });
+  }
+
+  document.addEventListener("click", (e) => {
+    if (themeDropdown && !themeDropdown.contains(e.target)) {
+      themeDropdown.classList.remove("open");
+    }
+  });
+
   const themeButtons = document.querySelectorAll(".theme-btn");
   
   function applyTheme(theme) {
@@ -57,6 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.classList.remove('active');
       }
     });
+
+    if (themeDropdown) {
+      themeDropdown.classList.remove("open");
+    }
   }
 
   // Set initial button active states and register click events
