@@ -394,13 +394,33 @@ footer:hover {
   }
 
   header {
-    flex-direction: column;
-    gap: 24px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 20px;
     margin-bottom: 40px;
-    align-items: flex-start;
+    align-items: center;
+  }
+
+  .logo {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 22px;
+  }
+
+  .logo-img {
+    height: 64px;
+  }
+
+  .theme-dropdown {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
   }
 
   nav {
+    grid-column: 1 / span 2;
+    grid-row: 2;
     justify-content: flex-start;
     gap: 20px;
     width: 100%;
