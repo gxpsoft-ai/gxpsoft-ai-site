@@ -1034,7 +1034,70 @@ html[data-theme="light"] .pricing-badge {
   opacity: 0.8;
 }
 
+/* Promo Banner Styles */
+.promo-banner {
+  display: flex;
+  align-items: center;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-bottom: 24px;
+  gap: 12px;
+  font-size: 12px;
+  width: 100%;
+}
+
+.promo-tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 2px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+html[data-theme="light"] .promo-tag {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.promo-text {
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  line-height: 1.4;
+  flex-grow: 1;
+}
+
+.promo-link {
+  color: var(--text-color);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  -webkit-text-decoration-color: var(--underline-color);
+  text-decoration-color: var(--underline-color);
+  transition: text-decoration-color 0.2s, color 0.2s;
+  font-weight: 500;
+}
+
+.promo-link:hover {
+  -webkit-text-decoration-color: var(--underline-hover);
+  text-decoration-color: var(--underline-hover);
+}
+
 @media (max-width: 768px) {
+  .promo-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+
   .alpha-banner {
     flex-direction: column;
     align-items: flex-start;
