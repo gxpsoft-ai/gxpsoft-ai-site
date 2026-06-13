@@ -1,0 +1,125 @@
+---
+const pathname = Astro.url.pathname;
+const isHome = pathname === "/" || pathname === "/index.html" || pathname.endsWith("/index");
+const isOpen911 = pathname.includes("open911");
+const isResumeRx = pathname.includes("resumerx");
+const isBlog = pathname.includes("/blog") || pathname.includes("blog.html");
+const isProductsActive = isOpen911 || isResumeRx;
+---
+<header id="mainHeader">
+  <a href="/index.html" class="logo" id="logoLink">
+    <img src="/logo.svg" alt="GxPSoft AI Logo" class="logo-img" id="logoImg" />
+    GxPSoft AI
+  </a>
+  
+  <nav id="mainNav">
+    <a href="/index.html" class={`nav-link ${isHome ? 'active' : ''}`} id="navHome">Home</a>
+    <div class="dropdown" id="productsDropdown">
+      <span class={`dropdown-trigger ${isProductsActive ? 'active' : ''}`} id="productsTrigger">
+        <span class="dropdown-text">Products</span> 
+        <span class="dropdown-arrow">▼</span>
+      </span>
+      <div class="dropdown-content">
+        <a href="/open911.html" class={isOpen911 ? 'active' : ''} id="linkOpen911">Open911</a>
+        <a href="/resumerx.html" class={isResumeRx ? 'active' : ''} id="linkResumeRx">ResumeRx</a>
+        <a href="https://openbionews.com" id="linkOpenBioNews" target="_blank" rel="noopener noreferrer">OpenBio News</a>
+      </div>
+    </div>
+    <a href="/blog.html" class={`nav-link ${isBlog ? 'active' : ''}`} id="navBlog">Blog</a>
+    <a href="https://demo.gxpsoft.ai" class="nav-link" id="navDemo" target="_blank" rel="noopener noreferrer">Demo</a>
+  </nav>
+
+  <div class="theme-dropdown" id="themeDropdown">
+    <button class="theme-trigger" id="themeTrigger" aria-label="Toggle Theme">
+      <svg class="theme-icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 3v18" />
+        <path d="M12 3a9 9 0 0 1 0 18Z" fill="currentColor" />
+      </svg>
+      <span class="theme-arrow">▼</span>
+    </button>
+    <div class="theme-dropdown-content" id="themeDropdownContent">
+      <button class="theme-dropdown-btn theme-btn" data-theme-val="light" id="btnThemeLight">Light</button>
+      <button class="theme-dropdown-btn theme-btn" data-theme-val="dark" id="btnThemeDark">Dark</button>
+      <button class="theme-dropdown-btn theme-btn" data-theme-val="system" id="btnThemeSystem">System</button>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Immediate theme check helper function (runs in this script context if needed)
+  function initTheme(theme: string) {
+    if (theme === 'system') {
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    } else {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+  }
+
+  // Setup interaction when script runs client-side
+  const themeDropdown = document.getElementById("themeDropdown");
+  const themeTrigger = document.getElementById("themeTrigger");
+
+  if (themeTrigger && themeDropdown) {
+    themeTrigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      themeDropdown.classList.toggle("open");
+    });
+  }
+
+  document.addEventListener("click", (e) => {
+    if (themeDropdown && !themeDropdown.contains(e.target as Node)) {
+      themeDropdown.classList.remove("open");
+    }
+  });
+
+  const themeButtons = document.querySelectorAll(".theme-btn");
+  
+  function applyTheme(theme: string) {
+    initTheme(theme);
+    localStorage.setItem('theme-pref', theme);
+    
+    themeButtons.forEach(btn => {
+      if (btn.getAttribute('data-theme-val') === theme) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    if (themeDropdown) {
+      themeDropdown.classList.remove("open");
+    }
+  }
+
+  // Set initial button active states and register click events
+  themeButtons.forEach(btn => {
+    if (btn.getAttribute('data-theme-val') === (localStorage.getItem('theme-pref') || 'system')) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+    
+    btn.addEventListener('click', () => {
+      const val = btn.getAttribute('data-theme-val');
+      if (val) applyTheme(val);
+    });
+  });
+
+  // Listener for system color scheme shifts
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if ((localStorage.getItem('theme-pref') || 'system') === 'system') {
+      initTheme('system');
+    }
+  });
+
+  // Highlight products dropdown trigger if on a product page on client side (extra safety, though build time handles it)
+  const currentPath = window.location.pathname;
+  if (currentPath.includes("open911") || currentPath.includes("resumerx")) {
+    const productsTrigger = document.getElementById("productsTrigger");
+    if (productsTrigger) {
+      productsTrigger.classList.add("active");
+    }
+  }
+</script>
