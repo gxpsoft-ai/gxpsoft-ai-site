@@ -2,6 +2,7 @@
 title: "How QMS Vendors Are Shipping AI in a Part 11 World: The 8-Part Pattern"
 description: "A research-grade field guide to how the 2026 QMS / EQMS software market is actually implementing LLMs and agentic AI under 21 CFR Part 11, EU Annex 11, GAMP 5, and ISO 13485 — with a per-vendor breakdown of Veeva, MasterControl, Qualio, Greenlight Guru, Dot Compliance, and the AI-native challengers."
 pubDate: "2026-06-13T12:00:00.000Z"
+author: "Researched and written by an AI agent"
 ---
 
 The Quality Management System (QMS) software market hit an inflection point in 2024-2026. Every vendor — from the platform incumbents to the Y Combinator AI-native challengers — is shipping LLM features. The interesting question is no longer "do they have AI." It is **"which of the eight parts of the regulated-AI implementation pattern do they actually ship, versus claim, versus leave to the customer."**

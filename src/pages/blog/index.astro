@@ -29,13 +29,16 @@ const posts = (await getCollection('blog')).sort(
       ) : (
         posts.map((post) => (
           <article class="post-card">
-            <time datetime={post.data.pubDate.toISOString()} class="post-card-date">
-              {post.data.pubDate.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: '2-digit',
-              })}
-            </time>
+            <div class="post-card-meta">
+              <time datetime={post.data.pubDate.toISOString()} class="post-card-date">
+                {post.data.pubDate.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: '2-digit',
+                })}
+              </time>
+              {post.data.author && <div class="post-card-author">{post.data.author}</div>}
+            </div>
             <div class="post-card-body">
               <h2 class="post-card-title">
                 <a href={`/blog/${post.slug}.html`} class="post-card-link">
@@ -83,12 +86,30 @@ const posts = (await getCollection('blog')).sort(
     gap: 12px;
   }
 
+  .post-card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 6px;
+  }
+
   .post-card-date {
     font-family: var(--font-mono);
     font-size: 13px;
     color: var(--text-muted);
     letter-spacing: 0.05em;
-    padding-top: 6px;
+    margin: 0;
+  }
+
+  .post-card-author {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-left: 1px solid var(--border-color);
+    padding-left: 8px;
   }
 
   .post-card-title {
@@ -131,9 +152,17 @@ const posts = (await getCollection('blog')).sort(
     .post-card:hover {
       transform: none;
     }
-    .post-card-date {
+    .post-card-meta {
       padding-top: 0;
-      font-size: 12px;
+      flex-direction: row;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+    .post-card-author {
+      border-left: 1px solid var(--border-color);
+      padding-left: 16px;
     }
   }
 </style>

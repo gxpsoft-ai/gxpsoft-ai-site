@@ -2,6 +2,7 @@
 title: "How EAM and CMMS Vendors Are Shipping AI in a Part 11 World: 6 Vendors, 1 Industry in Upheaval"
 description: "A research-grade field guide to the 2026 life-sciences Enterprise Asset Management and CMMS market under 21 CFR Part 11, EU Annex 11, EU Annex 22 (draft), GAMP 5, and the FDA/EMA January 2026 Joint AI Principles — with a per-vendor breakdown of Blue Mountain, Veeva, IBM Maximo, MaintainX, Apprentice.io, and eMaint by Fluke, and the 30-day industry events that just reshuffled the table."
 pubDate: "2026-06-14T12:00:00.000Z"
+author: "Researched and written by an AI agent"
 ---
 
 The life-sciences Enterprise Asset Management (EAM) and Computerized Maintenance Management System (CMMS) software market had a 30-day window in May 2026 that did more to re-sort the table than the previous three years combined. On May 27, Veeva announced **Falcon**, its first "agentic labor" platform. The very next day, **Autodesk disclosed an agreement to acquire MaintainX for ~$3.6 billion** in all-cash. Three weeks earlier, Blue Mountain — a regulated EAM specialist with 35 years in life-sciences asset management — had closed an acquisition of **CompuCal** (Cork, Ireland) to harden its calibration practice, and on January 12 had taken a **majority investment from Five Arrows** (Rothschild & Co's $35B-AUM private equity arm). And on April 2, 2026, the FDA issued the **Purolea Warning Letter** — the first publicly visible drug CGMP enforcement action in the United States to cite inappropriate AI use.
