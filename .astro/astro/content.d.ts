@@ -148,6 +148,13 @@ declare module 'astro:content' {
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".md"] };
+"how-csv-csa-vendors-ship-ai-in-part-11.md": {
+	id: "how-csv-csa-vendors-ship-ai-in-part-11.md";
+  slug: "how-csv-csa-vendors-ship-ai-in-part-11";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
 "how-eam-cmms-vendors-ship-ai-in-part-11.md": {
 	id: "how-eam-cmms-vendors-ship-ai-in-part-11.md";
   slug: "how-eam-cmms-vendors-ship-ai-in-part-11";
