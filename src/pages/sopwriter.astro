@@ -1,0 +1,208 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+---
+
+<Layout
+  title="SOP Writer | GxP-Compliant Standard Operating Procedure Generator"
+  description="SOP Writer helps life sciences, biotech, and pharmaceutical teams write GxP-compliant, audit-ready Standard Operating Procedures (SOPs) using structured AI orchestration."
+  canonicalUrl="https://gxpsoft.ai/sopwriter.html"
+  ogImage="https://gxpsoft.ai/images/sopwriter_og_image_v3.png"
+  pageClass="page-sopwriter"
+>
+  <Header slot="header" />
+
+  <section class="hero-text subpage-hero" id="heroSection">
+    <h1>SOP Writer: Write GxP-Compliant Standard Operating Procedures</h1>
+    
+    <div class="alpha-banner" id="alphaBanner">
+      <span class="alpha-tag">Early Alpha</span>
+      <span class="alpha-text">SOP Writer is under active development. Try it live at <a href="https://sopwriter.gxpsoft.ai" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">sopwriter.gxpsoft.ai</a>.</span>
+    </div>
+
+    <p>
+      Writing GxP-compliant SOPs is historically a slow, tedious, and expensive process. It requires deep regulatory knowledge, precise wording, and alignment with FDA regulations, GAMP 5, and Annex 11.
+    </p>
+    <p>
+      SOP Writer uses specialized AI agents to generate structured, audit-ready drafts in minutes — completely grounded in target regulations and pre-validated templates. No more blank-page syndrome. Built for quality, validation, and operations teams.
+    </p>
+  </section>
+
+  <section id="pipelineSection">
+    <p class="section-title">How It Works</p>
+    <p style="margin-bottom: 16px; font-size: 13px; opacity: 0.8;">
+      Five steps from template selection to an audit-ready SOP draft.
+    </p>
+
+    <div class="pipeline-container">
+      <div class="pipeline-steps" id="pipelineSteps">
+        <button class="pipeline-step active" data-step="0">
+          <span class="pipeline-step-number">01</span>
+          <span class="pipeline-step-title">Select GxP Template</span>
+        </button>
+        <button class="pipeline-step" data-step="1">
+          <span class="pipeline-step-number">02</span>
+          <span class="pipeline-step-title">Define Parameters</span>
+        </button>
+        <button class="pipeline-step" data-step="2">
+          <span class="pipeline-step-number">03</span>
+          <span class="pipeline-step-title">Select Regulations</span>
+        </button>
+        <button class="pipeline-step" data-step="3">
+          <span class="pipeline-step-number">04</span>
+          <span class="pipeline-step-title">AI Agent Generation</span>
+        </button>
+        <button class="pipeline-step" data-step="4">
+          <span class="pipeline-step-number">05</span>
+          <span class="pipeline-step-title">Review & Export</span>
+        </button>
+      </div>
+
+      <div class="pipeline-detail" id="pipelineDetail">
+        <h3 class="pipeline-detail-title" id="pipelineTitle">01. Select GxP Template</h3>
+        <p class="pipeline-detail-text" id="pipelineDesc">
+          Choose from a pre-validated library of SOP templates covering equipment operation, cleaning validation, deviation handling, change control, laboratory analysis, and software validation.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="featuresSection">
+    <p class="section-title">Why Use SOP Writer</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <h3>GxP Template Library</h3>
+        <p>Pre-configured structures for laboratories, manufacturing, and software validation. Automatically enforces required standard sections like Scope, Responsibilities, and Revision History.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Regulatory Grounding</h3>
+        <p>Our system validates generated clauses against selected guidelines (FDA 21 CFR Part 11, Part 210/211, Part 820, EU Annex 11). This minimizes non-deterministic hallucinations and ensures citations are accurate.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Audit-Ready Formatting</h3>
+        <p>Generates structured markdown documents complete with title block tables, step-by-step procedures, definition sections, and revision tracking matrices, ready for document management upload.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Human-in-the-Loop</h3>
+        <p>SOP Writer functions strictly as a co-pilot. The AI drafts the initial structure and details, allowing your quality assurance team to edit, review, and approve the final procedure with full oversight.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricingSection">
+    <p class="section-title">Pricing</p>
+    <div class="pricing-card">
+      <div class="pricing-info">
+        <span class="pricing-badge">Free Alpha</span>
+        <h3>Try SOP Writer Free</h3>
+        <p class="pricing-description">
+          Create, edit, and export GxP-compliant SOPs during our early alpha program. Help shape the product by sharing your feedback with us.
+        </p>
+      </div>
+      <div class="pricing-rate">
+        <div class="price-display">
+          <span class="price-amount">$0.00</span>
+          <span class="price-period">/ month</span>
+        </div>
+        <p class="pricing-note">Free access during early alpha.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contactSection">
+    <p class="section-title">Ready to Try It?</p>
+    <p class="section-text">
+      Start writing compliant SOPs right now at <a href="https://sopwriter.gxpsoft.ai" target="_blank" rel="noopener noreferrer" class="service-link">sopwriter.gxpsoft.ai</a>.
+    </p>
+    <p class="section-text" style="margin-top: 12px;">
+      Interested in a dedicated, secure deployment inside your company's AWS or Azure tenant? We provide full validation protocols (IQ/OQ/PQ) and custom integrations.
+    </p>
+    <p class="section-text" style="margin-top: 8px;">
+      Email:
+      <a href="mailto:duke.lee@saram.io" class="service-link" id="emailLink">duke.lee@saram.io</a>
+    </p>
+    <p class="section-text">
+      Phone:
+      <a href="tel:+19253946606" class="service-link" id="phoneLink">925 394-6606</a>
+    </p>
+  </section>
+</Layout>
+
+<script>
+  interface PipelineStep {
+    number: string;
+    title: string;
+    description: string;
+  }
+
+  const pipelineStepsData: PipelineStep[] = [
+    {
+      number: "01",
+      title: "Select GxP Template",
+      description: "Choose from a pre-validated library of SOP templates covering equipment operation, cleaning validation, deviation handling, change control, laboratory analysis, and software validation."
+    },
+    {
+      number: "02",
+      title: "Define Parameters",
+      description: "Provide operational details, equipment names, key roles, safety parameters, and specific step-by-step instructions unique to your company's procedures."
+    },
+    {
+      number: "03",
+      title: "Select Regulations",
+      description: "Choose target regulations (e.g., FDA 21 CFR Part 11, Part 210/211, Part 820, EU Annex 11, GAMP 5) to instruct the agent to embed appropriate compliance checks and terminology."
+    },
+    {
+      number: "04",
+      title: "AI Agent Generation",
+      description: "The AI agent compiles your inputs and grounds them in target regulations. It outputs a complete, professionally structured SOP with clear formatting and standard sections."
+    },
+    {
+      number: "05",
+      title: "Review & Export",
+      description: "Review and refine the draft within our browser editor. When satisfied, export as clean Markdown, Microsoft Word (.docx), or PDF, ready for routing and electronic signature."
+    }
+  ];
+
+  function initPipeline() {
+    const steps = document.querySelectorAll(".pipeline-step");
+    const title = document.getElementById("pipelineTitle");
+    const desc = document.getElementById("pipelineDesc");
+    const detailContainer = document.getElementById("pipelineDetail");
+    let activeIndex = 0;
+
+    if (!title || !desc || !detailContainer) return;
+
+    steps.forEach((btn, idx) => {
+      btn.addEventListener("click", () => {
+        if (idx === activeIndex) return;
+
+        activeIndex = idx;
+        steps.forEach((step, sIdx) => {
+          step.classList.remove("active", "completed");
+          if (sIdx === activeIndex) {
+            step.classList.add("active");
+          } else if (sIdx < activeIndex) {
+            step.classList.add("completed");
+          }
+        });
+
+        detailContainer.classList.add("transitioning");
+        setTimeout(() => {
+          const data = pipelineStepsData[activeIndex];
+          if (data) {
+            title.textContent = `${data.number}. ${data.title}`;
+            desc.textContent = data.description;
+          }
+          detailContainer.classList.remove("transitioning");
+        }, 120);
+      });
+    });
+  }
+
+  // Initialize immediately or on load
+  if (document.readyState === 'loading') {
+    document.addEventListener("DOMContentLoaded", initPipeline);
+  } else {
+    initPipeline();
+  }
+</script>

@@ -162,6 +162,20 @@ declare module 'astro:content' {
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".md"] };
+"regulated-ai-substance-vs-bs.md": {
+	id: "regulated-ai-substance-vs-bs.md";
+  slug: "regulated-ai-substance-vs-bs";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"writing-gxp-compliant-sops-with-ai-agents.md": {
+	id: "writing-gxp-compliant-sops-with-ai-agents.md";
+  slug: "writing-gxp-compliant-sops-with-ai-agents";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
 };
 
 	};

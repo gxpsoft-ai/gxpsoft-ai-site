@@ -3,8 +3,9 @@ const pathname = Astro.url.pathname;
 const isHome = pathname === "/" || pathname === "/index.html" || pathname.endsWith("/index");
 const isOpen911 = pathname.includes("open911");
 const isResumeRx = pathname.includes("resumerx");
+const isSOPWriter = pathname.includes("sopwriter");
 const isBlog = pathname.includes("/blog") || pathname.includes("blog.html");
-const isProductsActive = isOpen911 || isResumeRx;
+const isProductsActive = isOpen911 || isResumeRx || isSOPWriter;
 ---
 <header id="mainHeader">
   <a href="/index.html" class="logo" id="logoLink">
@@ -22,6 +23,7 @@ const isProductsActive = isOpen911 || isResumeRx;
       <div class="dropdown-content">
         <a href="/open911.html" class={isOpen911 ? 'active' : ''} id="linkOpen911">Open911</a>
         <a href="/resumerx.html" class={isResumeRx ? 'active' : ''} id="linkResumeRx">ResumeRx</a>
+        <a href="/sopwriter.html" class={isSOPWriter ? 'active' : ''} id="linkSOPWriter">SOP Writer</a>
         <a href="https://openbionews.com" id="linkOpenBioNews" target="_blank" rel="noopener noreferrer">OpenBio News</a>
       </div>
     </div>
@@ -116,7 +118,7 @@ const isProductsActive = isOpen911 || isResumeRx;
 
   // Highlight products dropdown trigger if on a product page on client side (extra safety, though build time handles it)
   const currentPath = window.location.pathname;
-  if (currentPath.includes("open911") || currentPath.includes("resumerx")) {
+  if (currentPath.includes("open911") || currentPath.includes("resumerx") || currentPath.includes("sopwriter")) {
     const productsTrigger = document.getElementById("productsTrigger");
     if (productsTrigger) {
       productsTrigger.classList.add("active");
