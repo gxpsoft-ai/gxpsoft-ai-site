@@ -4,8 +4,8 @@ import Header from '../components/Header.astro';
 ---
 
 <Layout
-  title="SOP Writer | GxP-Compliant Standard Operating Procedure Generator"
-  description="SOP Writer helps life sciences, biotech, and pharmaceutical teams write GxP-compliant, audit-ready Standard Operating Procedures (SOPs) using structured AI orchestration."
+  title="SOP Writer | Copy Clean AI Content Into Corporate Templates"
+  description="SOP Writer solves the clipboard tax: generate GxP procedures that copy into rigid, fragile corporate Word templates without breaking lists, headings, or styles."
   canonicalUrl="https://gxpsoft.ai/sopwriter.html"
   ogImage="https://gxpsoft.ai/images/sopwriter_og_image_v3.png"
   pageClass="page-sopwriter"
@@ -13,7 +13,7 @@ import Header from '../components/Header.astro';
   <Header slot="header" />
 
   <section class="hero-text subpage-hero" id="heroSection">
-    <h1>SOP Writer: Write GxP-Compliant Standard Operating Procedures</h1>
+    <h1>SOP Writer: Focus on Content, Not Broken Templates</h1>
     
     <div class="alpha-banner" id="alphaBanner">
       <span class="alpha-tag">Early Alpha</span>
@@ -21,70 +21,73 @@ import Header from '../components/Header.astro';
     </div>
 
     <p>
-      Writing GxP-compliant SOPs is historically a slow, tedious, and expensive process. It requires deep regulatory knowledge, precise wording, and alignment with FDA regulations, GAMP 5, and Annex 11.
+      If you've tried using ChatGPT or Claude to draft SOPs, you know the frustration: you get a great draft, but the moment you copy and paste it into your rigid corporate Word or PDF template, everything breaks.
     </p>
     <p>
-      SOP Writer uses specialized AI agents to generate structured, audit-ready drafts in minutes — completely grounded in target regulations and pre-validated templates. No more blank-page syndrome. Built for quality, validation, and operations teams.
+      Headings turn into standard paragraphs. Nested lists lose their indentation levels. Custom styling shifts, leaving you with hours of manual re-formatting. 
+    </p>
+    <p>
+      <strong>SOP Writer solves this.</strong> It strips away formatting noise and outputs clean, semantic structures designed specifically to be pasted directly into fragile corporate templates without breaking their layouts.
     </p>
   </section>
 
   <section id="pipelineSection">
     <p class="section-title">How It Works</p>
     <p style="margin-bottom: 16px; font-size: 13px; opacity: 0.8;">
-      Five steps from template selection to an audit-ready SOP draft.
+      Write, generate, and copy without formatting headaches in five steps.
     </p>
 
     <div class="pipeline-container">
       <div class="pipeline-steps" id="pipelineSteps">
         <button class="pipeline-step active" data-step="0">
           <span class="pipeline-step-number">01</span>
-          <span class="pipeline-step-title">Select GxP Template</span>
+          <span class="pipeline-step-title">Specify Target Format</span>
         </button>
         <button class="pipeline-step" data-step="1">
           <span class="pipeline-step-number">02</span>
-          <span class="pipeline-step-title">Define Parameters</span>
+          <span class="pipeline-step-title">Provide Raw Process Steps</span>
         </button>
         <button class="pipeline-step" data-step="2">
           <span class="pipeline-step-number">03</span>
-          <span class="pipeline-step-title">Select Regulations</span>
+          <span class="pipeline-step-title">AI Content-Only Drafting</span>
         </button>
         <button class="pipeline-step" data-step="3">
           <span class="pipeline-step-number">04</span>
-          <span class="pipeline-step-title">AI Agent Generation</span>
+          <span class="pipeline-step-title">Structure-Purity Copy</span>
         </button>
         <button class="pipeline-step" data-step="4">
           <span class="pipeline-step-number">05</span>
-          <span class="pipeline-step-title">Review & Export</span>
+          <span class="pipeline-step-title">Paste & Match Style</span>
         </button>
       </div>
 
       <div class="pipeline-detail" id="pipelineDetail">
-        <h3 class="pipeline-detail-title" id="pipelineTitle">01. Select GxP Template</h3>
+        <h3 class="pipeline-detail-title" id="pipelineTitle">01. Specify Target Format</h3>
         <p class="pipeline-detail-text" id="pipelineDesc">
-          Choose from a pre-validated library of SOP templates covering equipment operation, cleaning validation, deviation handling, change control, laboratory analysis, and software validation.
+          Set up the layout expectation. Tell the writer how your corporate document structures headings and lists so it understands how to isolate the text semantic layers.
         </p>
       </div>
     </div>
   </section>
 
   <section id="featuresSection">
-    <p class="section-title">Why Use SOP Writer</p>
+    <p class="section-title">Core Features</p>
     <div class="features-grid">
       <div class="feature-card">
-        <h3>GxP Template Library</h3>
-        <p>Pre-configured structures for laboratories, manufacturing, and software validation. Automatically enforces required standard sections like Scope, Responsibilities, and Revision History.</p>
+        <h3>Clipboard Preservation</h3>
+        <p>No more headers collapsing into paragraphs. SOP Writer outputs clean tags that corporate templates (like Microsoft Word or Google Docs) recognize as semantic structural layers, adopting your target styles instantly.</p>
       </div>
       <div class="feature-card">
-        <h3>Regulatory Grounding</h3>
-        <p>Our system validates generated clauses against selected guidelines (FDA 21 CFR Part 11, Part 210/211, Part 820, EU Annex 11). This minimizes non-deterministic hallucinations and ensures citations are accurate.</p>
+        <h3>Nested List Alignment</h3>
+        <p>Multi-level bullet points and numbered lists are the first thing to break when copying from standard LLMs. SOP Writer formats lists with precise spacing and structure-only HTML/markdown, preserving indentation levels.</p>
       </div>
       <div class="feature-card">
-        <h3>Audit-Ready Formatting</h3>
-        <p>Generates structured markdown documents complete with title block tables, step-by-step procedures, definition sections, and revision tracking matrices, ready for document management upload.</p>
+        <h3>Formatting Stripped</h3>
+        <p>Hidden margins, background colors, and custom fonts are stripped away. You are left with pure, structured text that matches the exact styles, margins, and headers of the document you paste it into.</p>
       </div>
       <div class="feature-card">
-        <h3>Human-in-the-Loop</h3>
-        <p>SOP Writer functions strictly as a co-pilot. The AI drafts the initial structure and details, allowing your quality assurance team to edit, review, and approve the final procedure with full oversight.</p>
+        <h3>GxP Content Focus</h3>
+        <p>Rather than wrestling with Microsoft Word margins, your engineers can focus purely on writing the operational procedures, ensuring accurate GxP instructions without formatting distractions.</p>
       </div>
     </div>
   </section>
@@ -94,9 +97,9 @@ import Header from '../components/Header.astro';
     <div class="pricing-card">
       <div class="pricing-info">
         <span class="pricing-badge">Free Alpha</span>
-        <h3>Try SOP Writer Free</h3>
+        <h3>Zero Layout Struggles</h3>
         <p class="pricing-description">
-          Create, edit, and export GxP-compliant SOPs during our early alpha program. Help shape the product by sharing your feedback with us.
+          Use SOP Writer for free during the alpha phase. Try pasting generated procedures into your own rigid templates and see the difference.
         </p>
       </div>
       <div class="pricing-rate">
@@ -112,10 +115,10 @@ import Header from '../components/Header.astro';
   <section id="contactSection">
     <p class="section-title">Ready to Try It?</p>
     <p class="section-text">
-      Start writing compliant SOPs right now at <a href="https://sopwriter.gxpsoft.ai" target="_blank" rel="noopener noreferrer" class="service-link">sopwriter.gxpsoft.ai</a>.
+      Start writing and pasting clean SOPs right now at <a href="https://sopwriter.gxpsoft.ai" target="_blank" rel="noopener noreferrer" class="service-link">sopwriter.gxpsoft.ai</a>.
     </p>
     <p class="section-text" style="margin-top: 12px;">
-      Interested in a dedicated, secure deployment inside your company's AWS or Azure tenant? We provide full validation protocols (IQ/OQ/PQ) and custom integrations.
+      Want a custom template mapping script or integration with your corporate document control system? Reach out to us.
     </p>
     <p class="section-text" style="margin-top: 8px;">
       Email:
@@ -138,28 +141,28 @@ import Header from '../components/Header.astro';
   const pipelineStepsData: PipelineStep[] = [
     {
       number: "01",
-      title: "Select GxP Template",
-      description: "Choose from a pre-validated library of SOP templates covering equipment operation, cleaning validation, deviation handling, change control, laboratory analysis, and software validation."
+      title: "Specify Target Format",
+      description: "Set up the layout expectation. Tell the writer how your corporate document structures headings and lists so it understands how to isolate the text semantic layers."
     },
     {
       number: "02",
-      title: "Define Parameters",
-      description: "Provide operational details, equipment names, key roles, safety parameters, and specific step-by-step instructions unique to your company's procedures."
+      title: "Provide Raw Process Steps",
+      description: "Input your raw procedural notes, equipment specs, or process steps. Focus entirely on content details, ignoring indentation or styling requirements."
     },
     {
       number: "03",
-      title: "Select Regulations",
-      description: "Choose target regulations (e.g., FDA 21 CFR Part 11, Part 210/211, Part 820, EU Annex 11, GAMP 5) to instruct the agent to embed appropriate compliance checks and terminology."
+      title: "AI Content-Only Drafting",
+      description: "The AI agent drafts the SOP, focusing purely on semantic hierarchy (e.g. H1, H2, Level 1 List, Level 2 List) without applying any custom colors, fonts, or margin styles."
     },
     {
       number: "04",
-      title: "AI Agent Generation",
-      description: "The AI agent compiles your inputs and grounds them in target regulations. It outputs a complete, professionally structured SOP with clear formatting and standard sections."
+      title: "Structure-Purity Copy",
+      description: "Click copy to capture the procedure in a clean, structure-only format. SOP Writer removes the formatting tags that cause standard LLM text to collide with corporate templates."
     },
     {
       number: "05",
-      title: "Review & Export",
-      description: "Review and refine the draft within our browser editor. When satisfied, export as clean Markdown, Microsoft Word (.docx), or PDF, ready for routing and electronic signature."
+      title: "Paste & Match Style",
+      description: "Paste the draft directly into your rigid corporate Word or PDF template. The text adopts your template's built-in styles instantly without breaking list alignment or margin configurations."
     }
   ];
 
