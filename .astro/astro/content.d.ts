@@ -162,9 +162,23 @@ declare module 'astro:content' {
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".md"] };
+"how-we-built-a-daily-biotech-stock-pipeline.md": {
+	id: "how-we-built-a-daily-biotech-stock-pipeline.md";
+  slug: "how-we-built-a-daily-biotech-stock-pipeline";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
 "regulated-ai-substance-vs-bs.md": {
 	id: "regulated-ai-substance-vs-bs.md";
   slug: "regulated-ai-substance-vs-bs";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"veeva-ehs-cross-vertical-blurring.md": {
+	id: "veeva-ehs-cross-vertical-blurring.md";
+  slug: "veeva-ehs-cross-vertical-blurring";
   body: string;
   collection: "blog";
   data: InferEntrySchema<"blog">
