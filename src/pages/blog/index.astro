@@ -41,7 +41,7 @@ const posts = (await getCollection('blog')).sort(
             </div>
             <div class="post-card-body">
               <h2 class="post-card-title">
-                <a href={`/blog/${post.slug}.html`} class="post-card-link">
+                <a href={`/blog/${post.id}.html`} class="post-card-link">
                   {post.data.title}
                 </a>
               </h2>
