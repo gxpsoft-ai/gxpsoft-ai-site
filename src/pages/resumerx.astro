@@ -1,6 +1,25 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
+
+const resumerxSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "ResumeRx",
+  "operatingSystem": "Web, Email Native",
+  "applicationCategory": "BusinessApplication",
+  "description": "ResumeRx matches life sciences professionals to biopharma job openings, generates customized keyword-optimized resumes, and sends them back to your inbox instantly.",
+  "url": "https://gxpsoft.ai/resumerx.html",
+  "offers": {
+    "@type": "Offer",
+    "price": "1.99",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "GxPSoft AI"
+  }
+};
 ---
 
 <Layout
@@ -9,6 +28,7 @@ import Header from '../components/Header.astro';
   canonicalUrl="https://gxpsoft.ai/resumerx.html"
   ogImage="https://gxpsoft.ai/images/resumerx_og_image_v3.png"
   pageClass="page-resumerx"
+  schema={resumerxSchema}
 >
   <Header slot="header" />
 
@@ -33,7 +53,7 @@ import Header from '../components/Header.astro';
   </section>
 
   <section id="pipelineSection">
-    <p class="section-title">How It Works</p>
+    <h2 class="section-title">How It Works</h2>
     <p style="margin-bottom: 16px; font-size: 13px; opacity: 0.8;">
       Five steps from your outbox to tailored applications.
     </p>
@@ -72,7 +92,7 @@ import Header from '../components/Header.astro';
   </section>
 
   <section id="featuresSection">
-    <p class="section-title">Why People Use ResumeRx</p>
+    <h2 class="section-title">Why People Use ResumeRx</h2>
     <div class="features-grid">
       <div class="feature-card">
         <h3>All Email, All the Time</h3>
@@ -94,7 +114,7 @@ import Header from '../components/Header.astro';
   </section>
 
   <section id="pricingSection">
-    <p class="section-title">Pricing</p>
+    <h2 class="section-title">Pricing</h2>
     <div class="pricing-card">
       <div class="pricing-info">
         <span class="pricing-badge">7-Day Free Trial</span>
@@ -114,7 +134,7 @@ import Header from '../components/Header.astro';
   </section>
 
   <section id="contactSection">
-    <p class="section-title">Ready to Try It?</p>
+    <h2 class="section-title">Ready to Try It?</h2>
     <p class="section-text">
       Email your resume to <strong>jobs@gxpsoft.ai</strong> right now. You'll have tailored matches in your inbox shortly.
     </p>

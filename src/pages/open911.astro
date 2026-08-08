@@ -1,6 +1,20 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
+
+const open911Schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Open911",
+  "operatingSystem": "Linux, Windows, OPC UA Compatible",
+  "applicationCategory": "IndustrialAutomationApplication",
+  "description": "Open911 is a reliable, FDA 21 CFR Part 11 ready OPC UA alarm notification platform for life sciences, biotechnology, and manufacturing environments.",
+  "url": "https://gxpsoft.ai/open911.html",
+  "author": {
+    "@type": "Organization",
+    "name": "GxPSoft AI"
+  }
+};
 ---
 
 <Layout
@@ -9,6 +23,7 @@ import Header from '../components/Header.astro';
   canonicalUrl="https://gxpsoft.ai/open911.html"
   ogImage="https://gxpsoft.ai/images/open911_og_image_v3.png"
   pageClass="page-open911"
+  schema={open911Schema}
 >
   <Header slot="header" />
 
@@ -29,7 +44,7 @@ import Header from '../components/Header.astro';
   </section>
 
   <section id="tourSection">
-    <p class="section-title">Product Interface Tour</p>
+    <h2 class="section-title">Product Interface Tour</h2>
     <p style="margin-bottom: 16px; font-size: 13px; opacity: 0.8;">
       Select a module from the menu below to preview its interface. Click the screenshot
       to view it in full resolution.
@@ -66,7 +81,7 @@ import Header from '../components/Header.astro';
   </section>
 
   <section id="featuresSection">
-    <p class="section-title">Core System Features</p>
+    <h2 class="section-title">Core System Features</h2>
     <div class="features-grid">
       <div class="feature-card">
         <h3>Direct OPC UA Browsing</h3>
@@ -88,7 +103,7 @@ import Header from '../components/Header.astro';
   </section>
 
   <section id="contactSection">
-    <p class="section-title">Inquire About Open911</p>
+    <h2 class="section-title">Inquire About Open911</h2>
     <p class="section-text">
       We provide full deployment support, GxP computer system validation (CSV) protocols,
       and customization options for Open911.

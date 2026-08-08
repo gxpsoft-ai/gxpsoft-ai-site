@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://gxpsoft.ai/sitemap-index.xml

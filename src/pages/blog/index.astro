@@ -22,7 +22,7 @@ const posts = (await getCollection('blog')).sort(
   </section>
 
   <section id="postsSection">
-    <p class="section-title">Latest Articles</p>
+    <h2 class="section-title">Latest Articles</h2>
     <div class="posts-list">
       {posts.length === 0 ? (
         <p class="no-posts">No articles published yet. Check back soon!</p>

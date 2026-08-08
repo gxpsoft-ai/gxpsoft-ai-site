@@ -1,6 +1,20 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
+
+const sopwriterSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "SOP Writer",
+  "operatingSystem": "Web Browser",
+  "applicationCategory": "BusinessApplication",
+  "description": "SOP Writer generates GxP procedures that copy into corporate Word templates without breaking lists, headings, or styles.",
+  "url": "https://gxpsoft.ai/sopwriter.html",
+  "author": {
+    "@type": "Organization",
+    "name": "GxPSoft AI"
+  }
+};
 ---
 
 <Layout
@@ -9,6 +23,7 @@ import Header from '../components/Header.astro';
   canonicalUrl="https://gxpsoft.ai/sopwriter.html"
   ogImage="https://gxpsoft.ai/images/sopwriter_og_image_v3.png"
   pageClass="page-sopwriter"
+  schema={sopwriterSchema}
 >
   <Header slot="header" />
 
@@ -32,7 +47,7 @@ import Header from '../components/Header.astro';
   </section>
 
   <section id="pipelineSection">
-    <p class="section-title">How It Works</p>
+    <h2 class="section-title">How It Works</h2>
     <p style="margin-bottom: 16px; font-size: 13px; opacity: 0.8;">
       Write, generate, and copy without formatting headaches in five steps.
     </p>
@@ -71,10 +86,10 @@ import Header from '../components/Header.astro';
   </section>
 
   <section id="featuresSection">
-    <p class="section-title">Core Features</p>
+    <h2 class="section-title">Core Features</h2>
     <div class="features-grid">
       <div class="feature-card">
-        <h3>Clipboard Preservation</h3>
+        <h3>Preserve Clipboard Structure</h3>
         <p>No more headers collapsing into paragraphs. SOP Writer outputs clean tags that corporate templates (like Microsoft Word or Google Docs) recognize as semantic structural layers, adopting your target styles instantly.</p>
       </div>
       <div class="feature-card">
@@ -82,7 +97,7 @@ import Header from '../components/Header.astro';
         <p>Multi-level bullet points and numbered lists are the first thing to break when copying from standard LLMs. SOP Writer formats lists with precise spacing and structure-only HTML/markdown, preserving indentation levels.</p>
       </div>
       <div class="feature-card">
-        <h3>Formatting Stripped</h3>
+        <h3>Formatting Noise Stripped</h3>
         <p>Hidden margins, background colors, and custom fonts are stripped away. You are left with pure, structured text that matches the exact styles, margins, and headers of the document you paste it into.</p>
       </div>
       <div class="feature-card">
@@ -93,7 +108,7 @@ import Header from '../components/Header.astro';
   </section>
 
   <section id="pricingSection">
-    <p class="section-title">Pricing</p>
+    <h2 class="section-title">Pricing</h2>
     <div class="pricing-card">
       <div class="pricing-info">
         <span class="pricing-badge">Free Alpha</span>
@@ -113,7 +128,7 @@ import Header from '../components/Header.astro';
   </section>
 
   <section id="contactSection">
-    <p class="section-title">Ready to Try It?</p>
+    <h2 class="section-title">Ready to Try It?</h2>
     <p class="section-text">
       Start writing and pasting clean SOPs right now at <a href="https://sopwriter.gxpsoft.ai" target="_blank" rel="noopener noreferrer" class="service-link">sopwriter.gxpsoft.ai</a>.
     </p>

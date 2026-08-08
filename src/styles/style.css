@@ -130,6 +130,7 @@ section:first-of-type {
 }
 
 .section-title {
+  margin-top: 0;
   margin-bottom: 12px;
   font-weight: 600;
   text-transform: uppercase;

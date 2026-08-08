@@ -1,5 +1,6 @@
 ---
 import '../styles/style.css';
+import JsonLd from '../components/JsonLd.astro';
 
 interface Props {
   title: string;
@@ -7,6 +8,7 @@ interface Props {
   canonicalUrl: string;
   ogImage?: string;
   pageClass?: string;
+  schema?: Record<string, any> | Array<Record<string, any>>;
 }
 
 const { 
@@ -14,8 +16,36 @@ const {
   description, 
   canonicalUrl, 
   ogImage = 'https://gxpsoft.ai/images/gxpsoft_og_image_v3.png', 
-  pageClass 
+  pageClass,
+  schema
 } = Astro.props;
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "GxPSoft AI",
+  "url": "https://gxpsoft.ai",
+  "logo": "https://gxpsoft.ai/logo.png",
+  "parentOrganization": {
+    "@type": "Organization",
+    "name": "Saram Consulting",
+    "url": "https://saram.io"
+  },
+  "sameAs": [
+    "https://github.com/gxpsoft-ai"
+  ]
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "GxPSoft AI",
+  "url": "https://gxpsoft.ai"
+};
+
+const pageSchemas = schema
+  ? [organizationSchema, websiteSchema, ...(Array.isArray(schema) ? schema : [schema])]
+  : [organizationSchema, websiteSchema];
 ---
 
 <!doctype html>
@@ -37,6 +67,8 @@ const {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" type="application/rss+xml" title="GxPSoft AI Blog RSS Feed" href="https://gxpsoft.ai/rss.xml" />
+    <JsonLd schema={pageSchemas} />
 
     <!-- Open Graph / Social Media Preview -->
     <meta property="og:type" content="website" />

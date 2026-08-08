@@ -11,20 +11,52 @@ interface Props {
   author?: string;
 }
 
-const { title, description, pubDate, updatedDate, author } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, author } = Astro.props;
 
 const formattedDate = pubDate.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
+
+const articleOgImage = heroImage 
+  ? (heroImage.startsWith('http') ? heroImage : `https://gxpsoft.ai${heroImage}`)
+  : 'https://gxpsoft.ai/images/gxpsoft_og_image_v3.png';
+
+const blogPostingSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": title,
+  "description": description,
+  "datePublished": pubDate.toISOString(),
+  ...(updatedDate ? { "dateModified": updatedDate.toISOString() } : {}),
+  "author": {
+    "@type": "Person",
+    "name": author || "GxPSoft AI Team"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "GxPSoft AI",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://gxpsoft.ai/logo.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": Astro.url.href
+  },
+  "image": articleOgImage
+};
 ---
 
 <Layout
   title={`${title} | GxPSoft AI Blog`}
   description={description}
   canonicalUrl={Astro.url.href}
+  ogImage={articleOgImage}
   pageClass="page-blog-post"
+  schema={blogPostingSchema}
 >
   <Header slot="header" />
 

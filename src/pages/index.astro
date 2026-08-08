@@ -1,6 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
+
+const homeSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "GxPSoft AI Open Source Tools",
+  "description": "GxPSoft AI builds secure, GxP-compliant open source developer tools and automation skills using advanced AI coding agents.",
+  "codeRepository": "https://github.com/gxpsoft-ai",
+  "author": {
+    "@type": "Organization",
+    "name": "GxPSoft AI"
+  }
+};
 ---
 
 <Layout
@@ -8,6 +20,7 @@ import Header from '../components/Header.astro';
   description="GxPSoft AI builds secure, GxP-compliant open source developer tools and automation skills using advanced AI coding agents."
   canonicalUrl="https://gxpsoft.ai/"
   pageClass="page-home"
+  schema={homeSchema}
 >
   <Header slot="header" />
 
@@ -22,7 +35,7 @@ import Header from '../components/Header.astro';
   </section>
 
   <section id="missionSection">
-    <p class="section-title">AI-Agent Centric Development</p>
+    <h2 class="section-title">AI-Agent Centric Development</h2>
     <p class="section-text">
       We believe that software engineering is shifting from manual coding to Agentic Orchestration.
       Our goal is to build the foundational "skills" and libraries that allow AI agents to navigate
@@ -32,7 +45,7 @@ import Header from '../components/Header.astro';
   </section>
 
   <section id="contactSection">
-    <p class="section-title">Contact & Collaboration</p>
+    <h2 class="section-title">Contact & Collaboration</h2>
     <p class="section-text">
       For partnership opportunities, custom deployment configurations, or general support:
     </p>
@@ -50,3 +63,4 @@ import Header from '../components/Header.astro';
     </p>
   </section>
 </Layout>
+
