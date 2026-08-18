@@ -9,15 +9,35 @@ interface Props {
   updatedDate?: Date;
   heroImage?: string;
   author?: string;
+  rawBody?: string;
+  slug?: string;
 }
 
-const { title, description, pubDate, updatedDate, heroImage, author } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, author, rawBody = '', slug = '' } = Astro.props;
 
 const formattedDate = pubDate.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
+
+const postUrl = slug ? `https://gxpsoft.ai/blog/${slug}.html` : Astro.url.href;
+
+const postMarkdown = `---
+title: ${JSON.stringify(title)}
+description: ${JSON.stringify(description)}
+pubDate: "${pubDate.toISOString()}"
+${updatedDate ? `updatedDate: "${updatedDate.toISOString()}"\n` : ''}author: ${JSON.stringify(author || "GxPSoft AI Team")}
+url: "${postUrl}"
+---
+
+# ${title}
+
+> Source: ${postUrl}
+> Published: ${formattedDate}${author ? ` | Author: ${author}` : ''}
+
+${rawBody.trim()}
+`;
 
 const articleOgImage = heroImage 
   ? (heroImage.startsWith('http') ? heroImage : `https://gxpsoft.ai${heroImage}`)
@@ -61,8 +81,27 @@ const blogPostingSchema = {
   <Header slot="header" />
 
   <article class="blog-post">
-    <div class="post-back">
+    <!-- hidden raw markdown container for reliable client-side copying -->
+    <textarea id="rawPostMarkdown" style="display: none;" readonly aria-hidden="true">{postMarkdown}</textarea>
+
+    <div class="post-top-nav">
       <a href="/blog.html" class="service-link">← Back to Blog</a>
+      <button
+        type="button"
+        class="copy-markdown-btn"
+        id="copyMarkdownBtnTop"
+        aria-label="Copy Markdown version of this post"
+        title="Copy Markdown with URL"
+      >
+        <svg class="copy-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+        <svg class="check-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span class="copy-btn-text">Copy Markdown</span>
+      </button>
     </div>
 
     <header class="post-header">
@@ -84,8 +123,105 @@ const blogPostingSchema = {
     <div class="post-content">
       <slot />
     </div>
+
+    <footer class="post-footer">
+      <div class="post-footer-actions">
+        <a href="/blog.html" class="service-link">← Back to all posts</a>
+        <button
+          type="button"
+          class="copy-markdown-btn"
+          id="copyMarkdownBtnBottom"
+          aria-label="Copy Markdown version of this post"
+          title="Copy Markdown with URL"
+        >
+          <svg class="copy-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <svg class="check-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span class="copy-btn-text">Copy Markdown</span>
+        </button>
+      </div>
+    </footer>
   </article>
 </Layout>
+
+<script>
+  function setupCopyMarkdown() {
+    const rawMarkdownEl = document.getElementById('rawPostMarkdown') as HTMLTextAreaElement | null;
+    if (!rawMarkdownEl) return;
+
+    const copyButtons = document.querySelectorAll<HTMLButtonElement>('.copy-markdown-btn');
+    
+    copyButtons.forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const textToCopy = rawMarkdownEl.value;
+        if (!textToCopy) return;
+
+        let copied = false;
+        if (navigator.clipboard && window.isSecureContext) {
+          try {
+            await navigator.clipboard.writeText(textToCopy);
+            copied = true;
+          } catch (err) {
+            console.warn('Navigator clipboard failed, falling back...', err);
+          }
+        }
+
+        if (!copied) {
+          try {
+            const tempArea = document.createElement('textarea');
+            tempArea.value = textToCopy;
+            tempArea.style.position = 'fixed';
+            tempArea.style.top = '-9999px';
+            tempArea.style.left = '-9999px';
+            tempArea.setAttribute('readonly', '');
+            document.body.appendChild(tempArea);
+            tempArea.select();
+            copied = document.execCommand('copy');
+            document.body.removeChild(tempArea);
+          } catch (err) {
+            console.error('Copy fallback failed:', err);
+          }
+        }
+
+        if (copied) {
+          copyButtons.forEach((b) => {
+            const copyIcon = b.querySelector('.copy-icon') as HTMLElement | null;
+            const checkIcon = b.querySelector('.check-icon') as HTMLElement | null;
+            const textSpan = b.querySelector('.copy-btn-text') as HTMLElement | null;
+
+            b.classList.add('copied');
+            if (copyIcon) copyIcon.style.display = 'none';
+            if (checkIcon) checkIcon.style.display = 'inline-block';
+            if (textSpan) textSpan.textContent = 'Copied!';
+          });
+
+          setTimeout(() => {
+            copyButtons.forEach((b) => {
+              const copyIcon = b.querySelector('.copy-icon') as HTMLElement | null;
+              const checkIcon = b.querySelector('.check-icon') as HTMLElement | null;
+              const textSpan = b.querySelector('.copy-btn-text') as HTMLElement | null;
+
+              b.classList.remove('copied');
+              if (copyIcon) copyIcon.style.display = 'inline-block';
+              if (checkIcon) checkIcon.style.display = 'none';
+              if (textSpan) textSpan.textContent = 'Copy Markdown';
+            });
+          }, 2000);
+        }
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupCopyMarkdown);
+  } else {
+    setupCopyMarkdown();
+  }
+</script>
 
 <style is:global>
   /* Blog post details layout */
@@ -95,9 +231,74 @@ const blogPostingSchema = {
     padding-bottom: 60px;
   }
 
-  .post-back {
+  .post-top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 32px;
     font-size: 13px;
+    gap: 16px;
+  }
+
+  .copy-markdown-btn {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    line-height: 1;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .copy-markdown-btn:hover {
+    color: var(--text-color);
+    background-color: var(--card-bg-hover);
+    border-color: var(--underline-hover);
+    transform: translateY(-1px);
+  }
+
+  .copy-markdown-btn:active {
+    transform: translateY(0);
+  }
+
+  .copy-markdown-btn.copied {
+    color: #10b981;
+    border-color: rgba(16, 185, 129, 0.4);
+    background-color: rgba(16, 185, 129, 0.08);
+  }
+
+  html[data-theme="light"] .copy-markdown-btn.copied {
+    color: #059669;
+    border-color: rgba(5, 150, 105, 0.4);
+    background-color: rgba(5, 150, 105, 0.08);
+  }
+
+  .copy-icon, .check-icon {
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
+
+  .post-footer {
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .post-footer-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    gap: 16px;
   }
 
   .post-header {
@@ -168,6 +369,20 @@ const blogPostingSchema = {
   }
 
   @media (max-width: 640px) {
+    .post-top-nav {
+      flex-direction: row;
+      align-items: center;
+    }
+    .post-footer-actions {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .post-footer-actions .copy-markdown-btn {
+      width: 100%;
+      justify-content: center;
+      padding: 8px 16px;
+    }
     .post-header {
       grid-template-columns: 1fr;
       gap: 16px;
