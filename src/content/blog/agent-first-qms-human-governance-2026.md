@@ -341,7 +341,7 @@ External agent
 
 Read fast. Draft to staging. Human signs. Write slow.
 
-This is the architecture we would use even if a QMS vendor later exposes a genuine MCP endpoint. See [[closed_qms_api_mcp_synthesis_2026-08-18]] for the separate market analysis of closed QMS APIs, MCP claims, and the contested “AI can come here” posture.
+This is the architecture we would use even if a QMS vendor later exposes a genuine MCP endpoint. The related market analysis is available in our [2026 QMS market read on closed APIs and external agents](https://gxpsoft.ai/blog/are-closed-qms-vendors-opening-up-for-external-ai-2026).
 
 ## What Belongs in the Audit Trail — and What Does Not
 
@@ -433,7 +433,7 @@ The architecture is now practical. The unresolved issues are governance and evid
 4. How do we use human overrides for model improvement without silently changing the live model?
 5. How do we validate long-lived workflows spanning days, model updates, vendor outages, and partial tool failures?
 6. How do we demonstrate that a model change did not alter the intended behavior of a high-risk workflow?
-7. How do we maintain a regulatory baseline across FDA QMSR, ISO 13485, EU Annex 11, GAMP 5, ISO 42001, and other jurisdictional requirements without treating them as interchangeable?
+7. How do we maintain a regulatory baseline across FDA QMSR, ISO 13485, EU Annex 11, GAMP 5, ISO 42001, and other jurisdictional requirements without treating them as interchangeable? The GAMP 5 Second Edition is useful here because it emphasizes critical thinking and risk-based approaches for computerized systems, including AI/ML. [4]
 
 These questions are not arguments against agentic QMS. They are the validation work the product must make visible.
 
@@ -456,7 +456,7 @@ The right product thesis is not “AI runs the QMS.” It is:
 
 > **AI performs the quality work that can be evidenced and governed; humans retain the quality authority that must be accountable.**
 
-That is how an agent-first QMS becomes genuinely audit-ready in a GMSR-era, Part 11, Annex 11, and GAMP 5 world.
+That is how an agent-first QMS becomes genuinely audit-ready in a QMSR-era, Part 11, Annex 11, and GAMP 5 world.
 
 ---
 
@@ -466,7 +466,7 @@ This synthesis builds on our prior work:
 - [Are Closed QMS Vendors Opening Up for External AI Agents Yet? A 2026 Market Read](/blog/are-closed-qms-vendors-opening-up-for-external-ai-2026)
 - [The Clipboard Tax: Why Copying AI Output Breaks Corporate Word Templates](/blog/writing-gxp-compliant-sops-with-ai-agents)
 
-The comprehensive architecture report is saved in the Obsidian vault as [[ai_agent_first_qms_architecture_2026-08-18]].
+The full architecture brief covers the evidence graph, agent boundaries, validation controls, and the deviation-to-CAPA implementation sequence in more detail.
 
 ---
 
