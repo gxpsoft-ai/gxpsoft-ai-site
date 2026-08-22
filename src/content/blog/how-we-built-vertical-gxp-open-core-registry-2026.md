@@ -1,6 +1,6 @@
 ---
-title: "How We Built an Open-Core Life Sciences GxP System Registry That Survives 21 CFR Part 11 — And What the Source Code Actually Looks Like"
-description: "A behind-the-build field guide to constructing the gxp-core-suite ITAM & Master GxP System Registry under 21 CFR Part 11, EU Annex 11, GAMP 5, and ALCOA+ — with the forward-chained SHA-256 audit ledger, the BFS blast-radius engine, the FastMCP server, the Pydantic AI Compliance Copilot, and the deterministic-fallback agent pattern that keeps the AI honest under an FDA inspection. Includes real source snippets from apps/server/, packages/mcp-server/, and the eight pytest modules that prove the design."
+title: "Phase 1 of an Open-Core Life Sciences GxP System Registry: The Source Code, the Audit Chain, and What Comes After"
+description: "A behind-the-build field guide to the Phase 1 foundation of the gxp-core-suite ITAM & Master GxP System Registry under 21 CFR Part 11, EU Annex 11, GAMP 5, and ALCOA+ — with the forward-chained SHA-256 audit ledger, the BFS blast-radius engine, the FastMCP server, the Pydantic AI Compliance Copilot, and the deterministic-fallback agent pattern that keeps the AI honest under an FDA inspection. Includes real source snippets from apps/server/, packages/mcp-server/, and the eight pytest modules that prove the design, plus an honest map of what is shipped, what is deferred to Phase 2 (ITSM, Change Control), Phase 3 (CSA, Living RTM), and Phase 4 (Lab OT Edge)."
 pubDate: "2026-08-22T16:00:00.000Z"
 author: "Researched and written by an AI agent"
 ---
@@ -13,7 +13,9 @@ On a Tuesday afternoon in mid-2026, a bioprocess engineer at a hypothetical San 
 
 In a life sciences IT shop that runs a Master GxP System List in a static Excel spreadsheet, the answer to question 1 is *ask the QC manager*, the answer to question 2 is *search the SharePoint*, and the answer to question 3 is *trust the database administrator*. The IT, the QC analyst, the QA, and the validation team each have a fragment of the answer, and the fragments are not joined together anywhere.
 
-We built [github.com/saram-io/gxp-core-suite](https://github.com/saram-io/gxp-core-suite) (and the open-core POC at [github.com/gxpsoft-ai/gxpsoft-poc](https://github.com/gxpsoft-ai/gxpsoft-poc)) to compress that workflow into a single auditable registry, a forward-chained SHA-256 audit ledger, a multi-hop BFS blast-radius engine, and a Model Context Protocol (MCP) server that exposes the registry to AI agents under a strict harness. The interesting question is no longer *can AI touch a GxP system.* The interesting question is **"what shape of system architecture keeps the AI honest under an FDA inspection, while still letting it answer compliance questions in seconds?"** This is the field guide to what we built, why each piece exists, and what the source code actually says.
+We shipped the Phase 1 foundation at [github.com/saram-io/gxp-core-suite](https://github.com/saram-io/gxp-core-suite) (with the open-core POC at [github.com/gxpsoft-ai/gxpsoft-poc](https://github.com/gxpsoft-ai/gxpsoft-poc)): an auditable asset registry, a forward-chained SHA-256 audit ledger, a multi-hop BFS blast-radius engine, and a Model Context Protocol (MCP) server that exposes the registry to AI agents under a strict harness. That is the scope of Phase 1. QMS workflows, Change Control, CSA / Living RTM, and the Lab OT Edge proxy are planned for Phases 2 through 4 and are deferred; this post is honest about what is shipped today versus what is on the roadmap.
+
+The interesting question is no longer *can AI touch a GxP system.* The interesting question is **"what shape of system architecture keeps the AI honest under an FDA inspection, while still letting it answer compliance questions in seconds?"** This is the field guide to what Phase 1 actually contains, why each piece exists, and what the source code actually says.
 
 ## The Tension: Compliance Is a Cryptographic Property, Not a Procedural One
 
@@ -40,7 +42,7 @@ The shape that wins: **a deterministic GxP core that owns the audit ledger, the 
 
 ## The 6-Part Vertical GxP Architecture Pattern
 
-The shape that survived review, end to end, is six parts. Each part is a directory or a package in the monorepo.
+The shape of the Phase 1 build, end to end, is six parts. Each part is a directory or a package in the monorepo.
 
 **1. GxP ITAM Data Model (`apps/server/app/models/asset.py`) — The Master GxP System List as a relational schema.** The `Asset` model is a SQLAlchemy 2.0 declarative with `asset_tag` (unique, indexed), `asset_type` (`Hardware`, `Software`, `SaaS`, `LabWorkstation`, `EdgeDevice`), `status` (`Draft`, `Active`, `In-Maintenance`, `Retired`), and the GxP-specific fields: `gxp_impact` (`DIRECT_GXP`, `INDIRECT_GXP`, `NON_GXP`), `gamp_category` (`CAT_1_INFRASTRUCTURE`, `CAT_3_NON_CONFIGURED`, `CAT_4_CONFIGURED`, `CAT_5_CUSTOM`), `data_integrity_scope` (boolean for ALCOA+ raw source data), `validation_package_id` (e.g. `VAL-2025-UPLC-01`), `system_owner_email`, `qa_contact_email`, and a JSON `specifications` blob. `CheckConstraint`s enforce the allowed enum values at the database level, so an invalid `gamp_category` cannot be persisted even if the Pydantic schema is bypassed. `AssetRelationship` carries the graph edges: `HOSTS`, `CONTROLS`, `DEPENDS_ON`, `COMMUNICATES_WITH`, with a `CheckConstraint` that prevents self-relationships (`source_asset_id != target_asset_id`).
 
@@ -266,9 +268,9 @@ The `scripts/seed_assets.py` script populates a realistic life sciences ITAM dat
 
 This is not a toy dataset. Every `asset_tag` is a real-world GxP instrument or system. Every `specifications` blob contains real firmware versions, real protocol stacks (OPC-UA / Modbus TCP, BACnet IP, S7-1500 PLC), and real validation package IDs. A QA team that runs the seed gets a 36-asset Master GxP System List with a full Part 11 audit trail, a 34-edge change-control blast-radius graph, and a Qdrant collection of indexed URS passages — instantly. The data is the validation that the data model works for the real world.
 
-## The 7 Buyer Questions for an Open-Core GxP System Registry
+## The 7 Buyer Questions for the Phase 1 ITAM Core
 
-Before adopting an open-core GxP system registry, ask the vendor (or the maintainer) these seven questions. If the answer to any of them is hand-waving, walk.
+Before adopting the Phase 1 ITAM core — or any open-core GxP system registry — ask the maintainer these seven questions. If the answer to any of them is hand-waving, walk. The first four questions are the ones the Phase 1 codebase can answer today; the last three are the questions that tell you whether the project has a credible roadmap to QMS, CSA, and Lab Edge in Phases 2 through 4.
 
 1. **Is the audit ledger a forward-chained SHA-256 hash, or a database append-only log?** A log file is not tamper-evident. A chain is. We can prove the difference with the test suite.
 2. **Can you demonstrate the chain catching a deliberate out-of-band modification to a historical record?** If the answer is "we have an audit log, that is sufficient," the chain is not a chain. The Purolea Warning Letter (April 2, 2026) made the regulatory floor concrete: *"If you use AI as an aid in document creation, you must review the AI generated documents to ensure they were accurate and actually compliant with CGMP."* The same scrutiny applies to audit trails.
@@ -292,11 +294,11 @@ Three open questions we have not answered in phase 1:
 
 The right question is no longer *can AI touch a GxP system.* The right question is **what shape of system architecture keeps the AI honest under an FDA inspection, while still letting it answer compliance questions in seconds.**
 
-The shape that wins: a deterministic GxP core that owns the audit ledger, the topology graph, and the MCP tool surface; a forward-chained SHA-256 audit ledger that catches out-of-band modifications at the exact sequence number; a BFS blast-radius engine that turns change-control risk into a 50-millisecond graph query; a FastMCP tool surface of five read-only tools; a Pydantic AI Compliance Copilot with a 10-second LLM timeout and a deterministic keyword-routed fallback; and a Langfuse observability layer that traces every agent invocation to the tool calls it made and the response it received.
+The shape that Phase 1 ships: a deterministic GxP core that owns the audit ledger, the topology graph, and the MCP tool surface; a forward-chained SHA-256 audit ledger that catches out-of-band modifications at the exact sequence number; a BFS blast-radius engine that turns change-control risk into a 50-millisecond graph query; a FastMCP tool surface of five read-only tools; a Pydantic AI Compliance Copilot with a 10-second LLM timeout and a deterministic keyword-routed fallback; and a Langfuse observability layer that traces every agent invocation to the tool calls it made and the response it received. That is the foundation. QMS, Change Control, CSA, and the Lab Edge proxy are the next three layers, and the post above explains how each one will connect to what Phase 1 already proves.
 
-The audit trail is the proof. The blast radius is the answer. The MCP server is the door. The agent is the copilot. The human still signs.
+The audit trail is the proof. The blast radius is the answer. The MCP server is the door. The agent is the copilot. The human still signs. And the registry is open-core, not a finished product — Phase 1 is the root node, not the tree.
 
-Source: [github.com/saram-io/gxp-core-suite](https://github.com/saram-io/gxp-core-suite). 36 assets seeded, 34 edges graphed, 8 pytest modules green, 5 MCP tools exposed, 1 forward-chained SHA-256 audit ledger. Apache 2.0.
+Source: [github.com/saram-io/gxp-core-suite](https://github.com/saram-io/gxp-core-suite). 36 assets seeded, 34 edges graphed, 8 pytest modules green, 5 MCP tools exposed, 1 forward-chained SHA-256 audit ledger. Apache 2.0. **This is Phase 1, not the full platform.**
 
 ## What Comes After Phase 1: The Open-Core Roadmap
 
