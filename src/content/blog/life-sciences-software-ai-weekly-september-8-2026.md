@@ -93,7 +93,7 @@ Veeva announced participation in two September investor conferences:
 - **Wells Fargo 21st Annual Healthcare Conference** (Boston, Sep 9) — Paul Shawah, EVP Strategy
 - **Citi 2026 Global TMT Conference** (New York, Sep 10) — Brian Van Wagener, CFO
 
-No product news this week, but the investor circuit is where forward-looking commentary happens. Watch for updates on Veeva Falcon adoption numbers, Vault CRM migration进度, and any new AI agent capabilities beyond the 26R2 release.
+No product news this week, but the investor circuit is where forward-looking commentary happens. Watch for updates on Veeva Falcon adoption numbers, Vault CRM migration progress, and any new AI agent capabilities beyond the 26R2 release.
 
 Source: [BioSpace](https://www.biospace.com/press-releases/veeva-to-present-at-upcoming-september-2026-investor-conferences)
 
