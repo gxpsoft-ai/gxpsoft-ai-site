@@ -31,6 +31,13 @@ The LLM's job is to determine which category a ticket falls into, then route acc
 
 ## Our AI Help Desk Workflow
 
+Here is a walkthrough of the AI Help Desk in action:
+
+<video controls preload="metadata" style="max-width: 100%; border-radius: 4px; border: 1px solid var(--border-color); margin: 32px 0;">
+  <source src="https://file.gxpsoft.ai/video/ai-help-desk-demo.mp4" type="video/mp4" />
+  Your browser does not support the video tag. <a href="https://file.gxpsoft.ai/video/ai-help-desk-demo.mp4">Download the demo video</a>.
+</video>
+
 ### For the User
 
 The workflow is five steps, and the user sees three of them:
