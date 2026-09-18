@@ -1,0 +1,66 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+
+const homeSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "GxPSoft AI 오픈소스 도구",
+  "description": "GxPSoft AI는 고급 AI 코딩 에이전트를 활용하여 안전하고 GxP 규제를 준수하는 오픈소스 개발자 도구 및 자동화 스킬을 구축합니다.",
+  "codeRepository": "https://github.com/gxpsoft-ai",
+  "author": {
+    "@type": "Organization",
+    "name": "GxPSoft AI"
+  }
+};
+---
+
+<Layout
+  title="GxPSoft AI | 오픈소스 AI 에이전트 & 개발자 도구"
+  description="GxPSoft AI는 고급 AI 코딩 에이전트를 활용하여 안전하고 GxP 규제를 준수하는 오픈소스 개발자 도구 및 자동화 스킬을 구축합니다."
+  canonicalUrl="https://gxpsoft.ai/ko.html"
+  pageClass="page-home"
+  schema={homeSchema}
+  locale="ko"
+>
+  <Header slot="header" />
+
+  <section class="hero-text" id="heroSection">
+    <h1>GxP 및 핵심 시스템을 위한 오픈소스 AI 에이전트</h1>
+    <p>우리는 자율형 AI 에이전트를 활용하여 오픈소스 도구를 구축합니다.</p>
+    <p>
+      최첨단 LLM과 정형화된 지식, 그리고 선언적 검증 방식을 결합하여,
+      개발자들이 안전한 백업, 산업 시스템 원격 측정, GxP 규제 준수 루틴과 같은 중요 운영 업무를
+      신속하고 신뢰할 수 있게 자동화하도록 지원합니다.
+    </p>
+  </section>
+
+  <section id="missionSection">
+    <h2 class="section-title">AI 에이전트 중심의 개발</h2>
+    <p class="section-text">
+      소프트웨어 엔지니어링은 수동 코딩에서 에이전트 오케스트레이션(Agentic Orchestration)으로 전환되고 있습니다.
+      우리의 목표는 AI 에이전트가 복잡한 CLI 유틸리티와 산업용 프로토콜을 안전하게 다룰 수 있도록 하는
+      기반 "스킬"과 라이브러리를 구축하는 것입니다. 표준 도구(예: Restic)와 복잡한 프로토콜(예: OPC UA)을
+      에이전트 친화적인 인터페이스로 래핑하여 완벽한 실행을 보장합니다.
+    </p>
+  </section>
+
+  <section id="contactSection">
+    <h2 class="section-title">연락 및 협업 문의</h2>
+    <p class="section-text">
+      파트너십 기회, 맞춤형 배포 구성, 일반 기술 지원 문의:
+    </p>
+    <p class="section-text" style="margin-top: 8px;">
+      이메일:
+      <a href="mailto:info@saram.consulting" class="service-link" id="emailLink">info@saram.consulting</a>
+    </p>
+    <p class="section-text">
+      전화:
+      <a href="tel:+19253946606" class="service-link" id="phoneLink">925 394-6606</a>
+    </p>
+    <p class="section-text">
+      GitHub:
+      <a href="https://github.com/gxpsoft-ai" class="service-link" id="gitLink">@gxpsoft-ai</a>
+    </p>
+  </section>
+</Layout>

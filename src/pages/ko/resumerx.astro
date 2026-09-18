@@ -1,0 +1,232 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+
+const resumerxSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "ResumeRx",
+  "operatingSystem": "웹, 이메일 네이티브",
+  "applicationCategory": "BusinessApplication",
+  "description": "ResumeRx는 생명과학 전문가와 바이오파마 채용 포지션을 매칭하고, 직무 키워드에 최적화된 맞춤형 이력서를 생성하여 받은편지함으로 즉시 전송해 드립니다.",
+  "url": "https://gxpsoft.ai/ko/resumerx.html",
+  "offers": {
+    "@type": "Offer",
+    "price": "1.99",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "GxPSoft AI"
+  }
+};
+---
+
+<Layout
+  title="ResumeRx | 이메일로 이력서를 보내고 바이오파마 채용 기회를 매칭받으세요"
+  description="ResumeRx는 생명과학 전문가와 바이오파마 채용 포지션을 매칭하고, 직무 키워드에 최적화된 맞춤형 이력서를 생성하여 받은편지함으로 즉시 전송해 드립니다."
+  canonicalUrl="https://gxpsoft.ai/ko/resumerx.html"
+  ogImage="https://gxpsoft.ai/images/resumerx_og_image_v3.png"
+  pageClass="page-resumerx"
+  schema={resumerxSchema}
+  locale="ko"
+>
+  <Header slot="header" />
+
+  <section class="hero-text subpage-hero" id="heroSection">
+    <h1>ResumeRx: 이메일로 이력서를 보내세요. 다음 바이오파마 커리어를 찾아드립니다.</h1>
+    
+    <div class="alpha-banner" id="alphaBanner">
+      <span class="alpha-tag">Early Alpha</span>
+      <span class="alpha-text">ResumeRx는 현재 활발히 개발 중입니다. 버그나 레이아웃 변경이 발생할 수 있습니다.</span>
+    </div>
+
+    <p>
+      <strong>jobs@gxpsoft.ai</strong>로 이력서를 보내세요. 수백 개 바이오 제약 기업의
+      활성 채용 공고와 매칭된 맞춤형 지원 서류를 이메일로 받아보실 수 있습니다.
+      각 서류는 지원하려는 특정 직무에 맞추어 스크리닝 통과에 최적화되어 생성됩니다.
+    </p>
+    <p>
+      별도 앱도, 복잡한 포털도, 회원가입도 없습니다. 오직 이메일 하나로 가능합니다.
+      바이오파마 업계를 진정으로 이해하는 전문가들이 업계 종사자들을 위해 구축했습니다.
+    </p>
+  </section>
+
+  <section id="pipelineSection">
+    <h2 class="section-title">작동 방식</h2>
+    <p style="margin-bottom: 16px; font-size: 13px; opacity: 0.8;">
+      보낸편지함에서 맞춤형 지원 서류 수신까지의 5단계 과정.
+    </p>
+
+    <div class="pipeline-container">
+      <div class="pipeline-steps" id="pipelineSteps">
+        <button class="pipeline-step active" data-step="0">
+          <span class="pipeline-step-number">01</span>
+          <span class="pipeline-step-title">이메일로 이력서 발송</span>
+        </button>
+        <button class="pipeline-step" data-step="1">
+          <span class="pipeline-step-number">02</span>
+          <span class="pipeline-step-title">행간의 역량 분석</span>
+        </button>
+        <button class="pipeline-step" data-step="2">
+          <span class="pipeline-step-number">03</span>
+          <span class="pipeline-step-title">최적 채용 공고 매칭</span>
+        </button>
+        <button class="pipeline-step" data-step="3">
+          <span class="pipeline-step-number">04</span>
+          <span class="pipeline-step-title">맞춤형 지원 서류 생성</span>
+        </button>
+        <button class="pipeline-step" data-step="4">
+          <span class="pipeline-step-number">05</span>
+          <span class="pipeline-step-title">받은편지함으로 결과 수신</span>
+        </button>
+      </div>
+
+      <div class="pipeline-detail" id="pipelineDetail">
+        <h3 class="pipeline-detail-title" id="pipelineTitle">01. 이메일로 이력서 발송</h3>
+        <p class="pipeline-detail-text" id="pipelineDesc">
+          이메일에 이력서를 첨부하여 저희에게 보내주세요. .docx, .txt, .md 형식을 지원합니다. 계정 생성, 양식 작성, 로그인이 전혀 필요하지 않습니다. 만약 PDF를 보내시면 저희가 작업 가능한 형식으로 다시 보내주시길 정중히 안내해 드립니다.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="featuresSection">
+    <h2 class="section-title">ResumeRx를 선택하는 이유</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <h3>100% 이메일 기반 진행</h3>
+        <p>설치할 앱도, 확인할 대시보드도, 외워야 할 비밀번호도 없습니다. 받은편지함에서 이력서를 보내고 받은편지함으로 매칭 결과를 수신합니다. 이미 일상적으로 사용하는 이메일 환경에서 모든 경험이 완결됩니다.</p>
+      </div>
+      <div class="feature-card">
+        <h3>생명과학 분야 맞춤 설계</h3>
+        <p>바이오파마 분야에만 집중하기에 업계를 깊이 이해합니다. GxP의 의미, 21 CFR Part 11의 중요성, 일반 IT 대비 임상 운영 경험의 가치를 잘 알고 있습니다. 범용 구인구직 사이트는 이해하지 못하는 당신의 전문 분야를 우리는 정확히 이해합니다.</p>
+      </div>
+      <div class="feature-card">
+        <h3>100% 작동하는 검증된 링크</h3>
+        <p>채용 공고 링크를 전송하기 전에 링크의 활성 여부를 직접 검증합니다. 삭제된 페이지, "마감된 포지션", 일반 채용 안내 페이지로의 불필요한 리디렉션이 없습니다. 매칭된 해당 직무 페이지로 바로 이동합니다.</p>
+      </div>
+      <div class="feature-card">
+        <h3>채용 심사 시스템(ATS) 최적화</h3>
+        <p>대부분의 대기업은 인사 담당자가 검토하기 전에 자동화 소프트웨어를 통해 이력서를 스크리닝합니다. ResumeRx가 생성하는 모든 이력서는 깔끔한 레이아웃, 표준 헤딩, 직무 설명서의 키워드를 반영하여 이러한 심사 시스템을 원활하게 통과하도록 최적화됩니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricingSection">
+    <h2 class="section-title">이용 요금</h2>
+    <div class="pricing-card">
+      <div class="pricing-info">
+        <span class="pricing-badge">7일 무료 체험</span>
+        <h3>단순하고 투명한 요금제</h3>
+        <p class="pricing-description">
+          부담 없이 ResumeRx를 시작해보세요. 바이오파마 커리어를 찾고 최적화된 지원 서류를 생성해 보세요. 언제든지 이메일 한 통으로 구독을 해지할 수 있습니다.
+        </p>
+      </div>
+      <div class="pricing-rate">
+        <div class="price-display">
+          <span class="price-amount">$1.99</span>
+          <span class="price-period">/ 월</span>
+        </div>
+        <p class="pricing-note">무료 체험 기간 종료 후 청구 시작</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contactSection">
+    <h2 class="section-title">지금 바로 시작해보세요</h2>
+    <p class="section-text">
+      지금 바로 <strong>jobs@gxpsoft.ai</strong>로 이력서를 보내보세요. 잠시 후 맞춤 매칭 결과를 받은편지함에서 확인하실 수 있습니다.
+    </p>
+    <p class="section-text" style="margin-top: 12px;">
+      궁금한 점이 있으신가요? 회사 또는 팀을 위한 맞춤형 배포에 관심이 있으신가요?
+    </p>
+    <p class="section-text" style="margin-top: 8px;">
+      이메일:
+      <a href="mailto:duke.lee@saram.io" class="service-link" id="emailLink">duke.lee@saram.io</a>
+    </p>
+    <p class="section-text">
+      전화:
+      <a href="tel:+19253946606" class="service-link" id="phoneLink">925 394-6606</a>
+    </p>
+  </section>
+</Layout>
+
+<script>
+  interface PipelineStep {
+    number: string;
+    title: string;
+    description: string;
+  }
+
+  const pipelineStepsData: PipelineStep[] = [
+    {
+      number: "01",
+      title: "이메일로 이력서 발송",
+      description: "이메일에 이력서를 첨부하여 저희에게 보내주세요. .docx, .txt, .md 형식을 지원합니다. 계정 생성, 양식 작성, 로그인이 전혀 필요하지 않습니다. 만약 PDF를 보내시면 저희가 작업 가능한 형식으로 다시 보내주시길 정중히 안내해 드립니다."
+    },
+    {
+      number: "02",
+      title: "행간의 역량 분석",
+      description: "시스템이 이력서를 구문 분석하여 기술 역량, 전문 도메인(GxP, 임상, 생산 제조, 규제 인허가), 담당 직무 및 재직 회사를 파악합니다. 생명과학 분야를 잘 알기에 무엇을 보아야 하는지 정확히 이해하고 있습니다."
+    },
+    {
+      number: "03",
+      title: "최적 채용 공고 매칭",
+      description: "대형 제약사부터 유망 바이오텍까지 수백 개 바이오 기업의 수천 개 활성 채용 공고와 프로필을 대조합니다. 단순히 유사한 공고를 무차별 전송하는 대신, 다양한 기업에 걸친 고품질 결과를 선별합니다."
+    },
+    {
+      number: "04",
+      title: "맞춤형 지원 서류 생성",
+      description: "매칭된 각 직무에 맞추어 특정 기업과 역할에 최적화된 맞춤형 이력서를 생성합니다. 본인의 경험과 경력은 그대로 유지하면서, 자동 채용 심사(ATS)를 통과하고 채용 담당자에게 전달될 수 있도록 어조와 키워드를 최적화합니다."
+    },
+    {
+      number: "05",
+      title: "받은편지함으로 결과 수신",
+      description: "곧 맞춤형 이력서 파일들이 첨부된 이메일을 받게 됩니다. 각 파일은 명확하게 명명되어(회사명_직무명.txt) 쉽게 구분할 수 있습니다. 각 채용 공고로 바로 연결되는 링크도 함께 제공되므로 클릭하여 바로 지원하실 수 있습니다."
+    }
+  ];
+
+  function initPipeline() {
+    const steps = document.querySelectorAll(".pipeline-step");
+    const title = document.getElementById("pipelineTitle");
+    const desc = document.getElementById("pipelineDesc");
+    const detailContainer = document.getElementById("pipelineDetail");
+    let activeIndex = 0;
+
+    if (!title || !desc || !detailContainer) return;
+
+    steps.forEach((btn, idx) => {
+      btn.addEventListener("click", () => {
+        if (idx === activeIndex) return;
+
+        activeIndex = idx;
+        steps.forEach((step, sIdx) => {
+          step.classList.remove("active", "completed");
+          if (sIdx === activeIndex) {
+            step.classList.add("active");
+          } else if (sIdx < activeIndex) {
+            step.classList.add("completed");
+          }
+        });
+
+        detailContainer.classList.add("transitioning");
+        setTimeout(() => {
+          const data = pipelineStepsData[activeIndex];
+          if (data) {
+            title.textContent = `${data.number}. ${data.title}`;
+            desc.textContent = data.description;
+          }
+          detailContainer.classList.remove("transitioning");
+        }, 120);
+      });
+    });
+  }
+
+  // Initialize immediately or on load
+  if (document.readyState === 'loading') {
+    document.addEventListener("DOMContentLoaded", initPipeline);
+  } else {
+    initPipeline();
+  }
+</script>

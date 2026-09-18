@@ -4,8 +4,8 @@
   --bg-color: #09090b; /* Deep zinc black */
   --text-color: #fafafa; /* Crisp off-white */
   --text-muted: #a1a1aa; /* Muted zinc gray */
-  --font-serif: "Playfair Display", serif;
-  --font-mono: "Roboto Mono", monospace;
+  --font-serif: "Playfair Display", "KoPub Batang", "Nanum Myeongjo", serif;
+  --font-mono: "Roboto Mono", "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", monospace;
   --underline-color: rgba(255, 255, 255, 0.12); /* Subtle underline for links */
   --underline-hover: rgba(255, 255, 255, 0.7); /* Bright underline on hover */
   --border-color: rgba(255, 255, 255, 0.08); /* Dark grid borders */
@@ -37,6 +37,10 @@ html[data-theme="light"] {
 html {
   overflow-y: scroll;
   background-color: var(--bg-color);
+}
+
+:lang(ko) {
+  word-break: keep-all;
 }
 
 body {
@@ -439,10 +443,14 @@ section:first-of-type {
     height: 64px;
   }
 
+  .header-actions,
   .theme-dropdown {
     grid-column: 2;
     grid-row: 1;
     justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
 
   nav {
@@ -543,6 +551,47 @@ section:first-of-type {
     top: 20px;
     right: 20px;
   }
+}
+
+/* Header Actions & Language Switcher */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lang-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  user-select: none;
+}
+
+.lang-btn {
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 2px 4px;
+  border-radius: 3px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  line-height: 1;
+}
+
+.lang-btn:hover {
+  color: var(--text-color);
+}
+
+.lang-btn.active {
+  color: var(--text-color);
+  font-weight: 700;
+  border-bottom: 1.5px solid var(--text-color);
+}
+
+.lang-divider {
+  color: var(--text-muted);
+  opacity: 0.35;
+  font-size: 11px;
 }
 
 /* Theme Dropdown Styles */

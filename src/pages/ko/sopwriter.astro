@@ -1,0 +1,227 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+
+const sopwriterSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "SOP Writer",
+  "operatingSystem": "웹 브라우저",
+  "applicationCategory": "BusinessApplication",
+  "description": "SOP Writer는 목록, 헤딩 또는 스타일 깨짐 없이 사내 Word 템플릿에 그대로 붙여넣을 수 있는 GxP 절차서를 생성합니다.",
+  "url": "https://gxpsoft.ai/ko/sopwriter.html",
+  "author": {
+    "@type": "Organization",
+    "name": "GxPSoft AI"
+  }
+};
+---
+
+<Layout
+  title="SOP Writer | 서식 깨짐 없이 사내 템플릿에 바로 붙여넣는 AI 표준작업지침서"
+  description="SOP Writer는 클립보드 서식 문제를 해결합니다. 단락 번호, 목록, 헤딩 손상 없이 회사 규정 Word 템플릿에 바로 복사해 붙여넣는 GxP 절차서를 생성합니다."
+  canonicalUrl="https://gxpsoft.ai/ko/sopwriter.html"
+  ogImage="https://gxpsoft.ai/images/sopwriter_og_image_v3.png"
+  pageClass="page-sopwriter"
+  schema={sopwriterSchema}
+  locale="ko"
+>
+  <Header slot="header" />
+
+  <section class="hero-text subpage-hero" id="heroSection">
+    <h1>SOP Writer: 깨진 템플릿 대신 콘텐츠에 집중하세요</h1>
+    
+    <div class="alpha-banner" id="alphaBanner">
+      <span class="alpha-tag">Early Alpha</span>
+      <span class="alpha-text">SOP Writer는 현재 활발히 개발 중입니다. <a href="https://sopwriter.gxpsoft.ai" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">sopwriter.gxpsoft.ai</a>에서 직접 사용해 보세요.</span>
+    </div>
+
+    <p>
+      ChatGPT나 Claude를 사용해 SOP(표준작업지침서) 초안을 작성해 보셨다면 누구나 겪는 좌절이 있습니다. 초안은 훌륭하게 작성되지만, 사내의 엄격한 Word나 PDF 템플릿에 복사해 붙여넣는 순간 모든 것이 깨집니다.
+    </p>
+    <p>
+      제목 헤딩이 일반 본문 단락으로 바뀌고, 들여쓰기된 다단계 목록이 일렬로 뭉개지며, 커스텀 스타일이 틀어져 결국 몇 시간 동안 수작업으로 서식을 다시 다듬어야 합니다.
+    </p>
+    <p>
+      <strong>SOP Writer가 이 문제를 해결합니다.</strong> 불필요한 서식 노이즈를 제거하고 구조적 의미 체계만을 가진 순수 텍스트를 출력하여, 깨지기 쉬운 사내 문서 템플릿에 붙여넣어도 레이아웃이 원본 양식에 그대로 일치하도록 지원합니다.
+    </p>
+  </section>
+
+  <section id="pipelineSection">
+    <h2 class="section-title">작동 방식</h2>
+    <p style="margin-bottom: 16px; font-size: 13px; opacity: 0.8;">
+      서식 스트레스 없이 5단계로 절차서를 작성하고 생성하여 복사하세요.
+    </p>
+
+    <div class="pipeline-container">
+      <div class="pipeline-steps" id="pipelineSteps">
+        <button class="pipeline-step active" data-step="0">
+          <span class="pipeline-step-number">01</span>
+          <span class="pipeline-step-title">대상 서식 지정</span>
+        </button>
+        <button class="pipeline-step" data-step="1">
+          <span class="pipeline-step-number">02</span>
+          <span class="pipeline-step-title">원시 프로세스 절차 입력</span>
+        </button>
+        <button class="pipeline-step" data-step="2">
+          <span class="pipeline-step-number">03</span>
+          <span class="pipeline-step-title">AI 순수 콘텐츠 초안 작성</span>
+        </button>
+        <button class="pipeline-step" data-step="3">
+          <span class="pipeline-step-number">04</span>
+          <span class="pipeline-step-title">순수 구조 기반 복사</span>
+        </button>
+        <button class="pipeline-step" data-step="4">
+          <span class="pipeline-step-number">05</span>
+          <span class="pipeline-step-title">붙여넣기 및 원본 스타일 매칭</span>
+        </button>
+      </div>
+
+      <div class="pipeline-detail" id="pipelineDetail">
+        <h3 class="pipeline-detail-title" id="pipelineTitle">01. 대상 서식 지정</h3>
+        <p class="pipeline-detail-text" id="pipelineDesc">
+          문서 레이아웃의 기대 구조를 설정합니다. 사내 문서가 제목과 목록을 어떻게 구성하는지 지정하여 시스템이 텍스트의 시맨틱 계층을 정확히 분리할 수 있도록 합니다.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="featuresSection">
+    <h2 class="section-title">주요 기능</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <h3>클립보드 구조 보존</h3>
+        <p>헤더가 일반 단락으로 뭉개지지 않습니다. SOP Writer는 사내 문서 템플릿(Microsoft Word, Google Docs 등)이 의미론적 구조 레이어로 인식할 수 있는 깨끗한 태그를 출력하여 대상 스타일을 즉시 적용합니다.</p>
+      </div>
+      <div class="feature-card">
+        <h3>중첩 목록 자동 정렬</h3>
+        <p>다단계 글머리 기호와 번호 매기기 목록은 일반 LLM에서 복사할 때 가장 먼저 깨지는 부분입니다. SOP Writer는 들여쓰기 깊이를 보존하는 정밀한 간격과 구조 전용 마크다운/HTML로 목록을 생성합니다.</p>
+      </div>
+      <div class="feature-card">
+        <h3>서식 노이즈 완벽 제거</h3>
+        <p>숨겨진 여백, 배경색, 임의의 사용자 지정 글꼴이 모두 제거됩니다. 붙여넣는 문서의 정확한 스타일, 여백 및 머리글에 맞춰지는 순수하고 정돈된 텍스트만 남습니다.</p>
+      </div>
+      <div class="feature-card">
+        <h3>GxP 콘텐츠 집중</h3>
+        <p>엔지니어가 Word 문서 여백과 씨름하는 대신, 운영 절차를 작성하는 일에만 집중할 수 있어 서식 문제에 방해받지 않고 정확한 GxP 지침서를 완성할 수 있습니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricingSection">
+    <h2 class="section-title">이용 요금</h2>
+    <div class="pricing-card">
+      <div class="pricing-info">
+        <span class="pricing-badge">무료 알파</span>
+        <h3>레이아웃 고민 제로</h3>
+        <p class="pricing-description">
+          알파 기간 동안 SOP Writer를 무료로 이용하세요. 생성된 절차서를 사내 엄격한 템플릿에 붙여넣어 차이를 직접 경험해 보세요.
+        </p>
+      </div>
+      <div class="pricing-rate">
+        <div class="price-display">
+          <span class="price-amount">$0.00</span>
+          <span class="price-period">/ 월</span>
+        </div>
+        <p class="pricing-note">얼리 알파 기간 동안 무료 제공</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contactSection">
+    <h2 class="section-title">지금 바로 사용해 보세요</h2>
+    <p class="section-text">
+      지금 바로 <a href="https://sopwriter.gxpsoft.ai" target="_blank" rel="noopener noreferrer" class="service-link">sopwriter.gxpsoft.ai</a>에서 깨끗한 SOP를 작성하고 붙여넣어 보세요.
+    </p>
+    <p class="section-text" style="margin-top: 12px;">
+      맞춤형 템플릿 매핑 스크립트나 사내 문서 관리 시스템(EDMS)과의 연동이 필요하신가요? 언제든 문의해 주세요.
+    </p>
+    <p class="section-text" style="margin-top: 8px;">
+      이메일:
+      <a href="mailto:duke.lee@saram.io" class="service-link" id="emailLink">duke.lee@saram.io</a>
+    </p>
+    <p class="section-text">
+      전화:
+      <a href="tel:+19253946606" class="service-link" id="phoneLink">925 394-6606</a>
+    </p>
+  </section>
+</Layout>
+
+<script>
+  interface PipelineStep {
+    number: string;
+    title: string;
+    description: string;
+  }
+
+  const pipelineStepsData: PipelineStep[] = [
+    {
+      number: "01",
+      title: "대상 서식 지정",
+      description: "문서 레이아웃의 기대 구조를 설정합니다. 사내 문서가 제목과 목록을 어떻게 구성하는지 지정하여 시스템이 텍스트의 시맨틱 계층을 정확히 분리할 수 있도록 합니다."
+    },
+    {
+      number: "02",
+      title: "원시 프로세스 절차 입력",
+      description: "원시 절차 메모, 장비 사양서 또는 작업 단계별 내용을 입력합니다. 들여쓰기나 스타일 서식에 신경 쓸 필요 없이 내용의 세부사항에만 온전히 집중하세요."
+    },
+    {
+      number: "03",
+      title: "AI 순수 콘텐츠 초안 작성",
+      description: "AI 에이전트가 맞춤형 색상, 폰트 또는 여백 스타일을 일체 배제하고, 순수한 의미론적 계층 구조(예: H1, H2, 1수준 목록, 2수준 목록)에만 집중하여 SOP를 초안 작성합니다."
+    },
+    {
+      number: "04",
+      title: "순수 구조 기반 복사",
+      description: "복사 버튼을 클릭하여 깨끗한 구조 전용 형식으로 절차서를 캡처합니다. SOP Writer는 일반 LLM 텍스트가 기업 템플릿과 충돌을 일으키는 서식 태그들을 자동으로 제거합니다."
+    },
+    {
+      number: "05",
+      title: "붙여넣기 및 원본 스타일 매칭",
+      description: "회사의 엄격한 Word 또는 PDF 템플릿에 초안을 직접 붙여넣으세요. 목록 정렬이나 여백 구성을 깨뜨리지 않고 템플릿의 내장 스타일에 즉시 완벽히 융합됩니다."
+    }
+  ];
+
+  function initPipeline() {
+    const steps = document.querySelectorAll(".pipeline-step");
+    const title = document.getElementById("pipelineTitle");
+    const desc = document.getElementById("pipelineDesc");
+    const detailContainer = document.getElementById("pipelineDetail");
+    let activeIndex = 0;
+
+    if (!title || !desc || !detailContainer) return;
+
+    steps.forEach((btn, idx) => {
+      btn.addEventListener("click", () => {
+        if (idx === activeIndex) return;
+
+        activeIndex = idx;
+        steps.forEach((step, sIdx) => {
+          step.classList.remove("active", "completed");
+          if (sIdx === activeIndex) {
+            step.classList.add("active");
+          } else if (sIdx < activeIndex) {
+            step.classList.add("completed");
+          }
+        });
+
+        detailContainer.classList.add("transitioning");
+        setTimeout(() => {
+          const data = pipelineStepsData[activeIndex];
+          if (data) {
+            title.textContent = `${data.number}. ${data.title}`;
+            desc.textContent = data.description;
+          }
+          detailContainer.classList.remove("transitioning");
+        }, 120);
+      });
+    });
+  }
+
+  // Initialize immediately or on load
+  if (document.readyState === 'loading') {
+    document.addEventListener("DOMContentLoaded", initPipeline);
+  } else {
+    initPipeline();
+  }
+</script>

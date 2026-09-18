@@ -9,6 +9,7 @@ interface Props {
   ogImage?: string;
   pageClass?: string;
   schema?: Record<string, any> | Array<Record<string, any>>;
+  locale?: 'en' | 'ko';
 }
 
 const { 
@@ -17,8 +18,17 @@ const {
   canonicalUrl, 
   ogImage = 'https://gxpsoft.ai/images/gxpsoft_og_image_v3.png', 
   pageClass,
-  schema
+  schema,
+  locale = 'en'
 } = Astro.props;
+
+const currentLocale = locale || (Astro.url.pathname.startsWith('/ko') ? 'ko' : 'en');
+const isKo = currentLocale === 'ko';
+
+const pathname = Astro.url.pathname;
+const cleanPath = pathname.replace(/^\/ko(\.html)?/, '').replace(/^\/index\.html$/, '') || '/';
+const enCanonical = cleanPath === '/' ? 'https://gxpsoft.ai/' : `https://gxpsoft.ai${cleanPath}`;
+const koCanonical = cleanPath === '/' ? 'https://gxpsoft.ai/ko.html' : `https://gxpsoft.ai/ko${cleanPath}`;
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -49,7 +59,7 @@ const pageSchemas = schema
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={currentLocale}>
   <head>
     <script is:inline>
       (function() {
@@ -67,6 +77,9 @@ const pageSchemas = schema
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" hreflang="en" href={enCanonical} />
+    <link rel="alternate" hreflang="ko" href={koCanonical} />
+    <link rel="alternate" hreflang="x-default" href={enCanonical} />
     <link rel="alternate" type="application/rss+xml" title="GxPSoft AI Blog RSS Feed" href="https://gxpsoft.ai/rss.xml" />
     <JsonLd schema={pageSchemas} />
 
@@ -80,6 +93,8 @@ const pageSchemas = schema
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={title} />
+    <meta property="og:locale" content={isKo ? "ko_KR" : "en_US"} />
+    <meta property="og:locale:alternate" content={isKo ? "en_US" : "ko_KR"} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalUrl} />
     <meta name="twitter:title" content={title} />
@@ -97,7 +112,15 @@ const pageSchemas = schema
       <div class="promo-banner" id="promoBanner">
         <span class="promo-tag">Saram Consulting</span>
         <span class="promo-text">
-          GxP & AI IT consulting, compliance automation, and custom software engineering for life sciences. <a href="https://saram.io" target="_blank" rel="noopener noreferrer" class="promo-link">Visit Saram Consulting &rarr;</a>
+          {isKo ? (
+            <>
+              GxP 및 AI IT 컨설팅, 규제 준수 자동화 및 생명과학 맞춤형 소프트웨어 엔지니어링. <a href="https://saram.io" target="_blank" rel="noopener noreferrer" class="promo-link">Saram Consulting 방문하기 &rarr;</a>
+            </>
+          ) : (
+            <>
+              GxP & AI IT consulting, compliance automation, and custom software engineering for life sciences. <a href="https://saram.io" target="_blank" rel="noopener noreferrer" class="promo-link">Visit Saram Consulting &rarr;</a>
+            </>
+          )}
         </span>
       </div>
 
@@ -109,13 +132,17 @@ const pageSchemas = schema
 
       <footer id="mainFooter">
         <div class="footer-research">
-          <span class="footer-label">Market Research:</span>
+          <span class="footer-label">{isKo ? '시장 조사:' : 'Market Research:'}</span>
           <a href="https://qms.saram.io" class="service-link">QMS (qms.saram.io)</a>
           <span class="footer-separator">·</span>
           <a href="https://csv.saram.io" class="service-link">CSV (csv.saram.io)</a>
         </div>
         <div class="footer-bottom">
-          GxPSoft AI is a subsidiary of <a href="https://saram.io" class="service-link">Saram Consulting</a>. 100% automated by Hermes Agent
+          {isKo ? (
+            <>GxPSoft AI는 <a href="https://saram.io" class="service-link">Saram Consulting</a>의 자회사입니다. Hermes Agent에 의해 100% 자동화됨</>
+          ) : (
+            <>GxPSoft AI is a subsidiary of <a href="https://saram.io" class="service-link">Saram Consulting</a>. 100% automated by Hermes Agent</>
+          )}
         </div>
       </footer>
     </div>

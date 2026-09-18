@@ -1,49 +1,94 @@
 ---
 const pathname = Astro.url.pathname;
-const isHome = pathname === "/" || pathname === "/index.html" || pathname.endsWith("/index");
+const isKo = pathname.startsWith("/ko/") || pathname === "/ko" || pathname === "/ko.html" || pathname.startsWith("/ko/index");
+const isHome = isKo 
+  ? (pathname === "/ko" || pathname === "/ko/" || pathname === "/ko/index.html" || pathname.endsWith("/ko/index"))
+  : (pathname === "/" || pathname === "/index.html" || pathname.endsWith("/index"));
 const isOpen911 = pathname.includes("open911");
 const isResumeRx = pathname.includes("resumerx");
 const isSOPWriter = pathname.includes("sopwriter");
 const isBlog = pathname.includes("/blog") || pathname.includes("blog.html");
 const isProductsActive = isOpen911 || isResumeRx || isSOPWriter;
+
+// Navigation links based on current locale
+const homeLink = isKo ? "/ko.html" : "/index.html";
+const open911Link = isKo ? "/ko/open911.html" : "/open911.html";
+const resumeRxLink = isKo ? "/ko/resumerx.html" : "/resumerx.html";
+const sopWriterLink = isKo ? "/ko/sopwriter.html" : "/sopwriter.html";
+const blogLink = isKo ? "/ko/blog.html" : "/blog.html";
+
+// Language switcher destination URLs
+let enTarget = "/index.html";
+let koTarget = "/ko.html";
+
+if (isOpen911) {
+  enTarget = "/open911.html";
+  koTarget = "/ko/open911.html";
+} else if (isResumeRx) {
+  enTarget = "/resumerx.html";
+  koTarget = "/ko/resumerx.html";
+} else if (isSOPWriter) {
+  enTarget = "/sopwriter.html";
+  koTarget = "/ko/sopwriter.html";
+} else if (isBlog) {
+  const blogPostMatch = pathname.match(/\/blog\/([^/]+)/);
+  if (blogPostMatch) {
+    enTarget = `/blog/${blogPostMatch[1]}`;
+    koTarget = `/ko/blog/${blogPostMatch[1]}`;
+  } else {
+    enTarget = "/blog.html";
+    koTarget = "/ko/blog.html";
+  }
+} else {
+  enTarget = "/index.html";
+  koTarget = "/ko.html";
+}
 ---
 <header id="mainHeader">
-  <a href="/index.html" class="logo" id="logoLink">
+  <a href={homeLink} class="logo" id="logoLink">
     <img src="/logo.svg" alt="GxPSoft AI Logo" class="logo-img" id="logoImg" />
     GxPSoft AI
   </a>
   
   <nav id="mainNav">
-    <a href="/index.html" class={`nav-link ${isHome ? 'active' : ''}`} id="navHome">Home</a>
+    <a href={homeLink} class={`nav-link ${isHome ? 'active' : ''}`} id="navHome">{isKo ? '홈' : 'Home'}</a>
     <div class="dropdown" id="productsDropdown">
       <span class={`dropdown-trigger ${isProductsActive ? 'active' : ''}`} id="productsTrigger">
-        <span class="dropdown-text">Products</span> 
+        <span class="dropdown-text">{isKo ? '제품' : 'Products'}</span> 
         <span class="dropdown-arrow">▼</span>
       </span>
       <div class="dropdown-content">
-        <a href="/open911.html" class={isOpen911 ? 'active' : ''} id="linkOpen911">Open911</a>
-        <a href="/resumerx.html" class={isResumeRx ? 'active' : ''} id="linkResumeRx">ResumeRx</a>
-        <a href="/sopwriter.html" class={isSOPWriter ? 'active' : ''} id="linkSOPWriter">SOP Writer</a>
+        <a href={open911Link} class={isOpen911 ? 'active' : ''} id="linkOpen911">Open911</a>
+        <a href={resumeRxLink} class={isResumeRx ? 'active' : ''} id="linkResumeRx">ResumeRx</a>
+        <a href={sopWriterLink} class={isSOPWriter ? 'active' : ''} id="linkSOPWriter">SOP Writer</a>
         <a href="https://openbionews.com" id="linkOpenBioNews" target="_blank" rel="noopener noreferrer">OpenBio News</a>
       </div>
     </div>
-    <a href="/blog.html" class={`nav-link ${isBlog ? 'active' : ''}`} id="navBlog">Blog</a>
-    <a href="https://demo.gxpsoft.ai" class="nav-link" id="navDemo" target="_blank" rel="noopener noreferrer">Demo</a>
+    <a href={blogLink} class={`nav-link ${isBlog ? 'active' : ''}`} id="navBlog">{isKo ? '블로그' : 'Blog'}</a>
+    <a href="https://demo.gxpsoft.ai" class="nav-link" id="navDemo" target="_blank" rel="noopener noreferrer">{isKo ? '데모' : 'Demo'}</a>
   </nav>
 
-  <div class="theme-dropdown" id="themeDropdown">
-    <button class="theme-trigger" id="themeTrigger" aria-label="Toggle Theme">
-      <svg class="theme-icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="12" r="9" />
-        <path d="M12 3v18" />
-        <path d="M12 3a9 9 0 0 1 0 18Z" fill="currentColor" />
-      </svg>
-      <span class="theme-arrow">▼</span>
-    </button>
-    <div class="theme-dropdown-content" id="themeDropdownContent">
-      <button class="theme-dropdown-btn theme-btn" data-theme-val="light" id="btnThemeLight">Light</button>
-      <button class="theme-dropdown-btn theme-btn" data-theme-val="dark" id="btnThemeDark">Dark</button>
-      <button class="theme-dropdown-btn theme-btn" data-theme-val="system" id="btnThemeSystem">System</button>
+  <div class="header-actions">
+    <div class="lang-switcher" id="langSwitcher" role="navigation" aria-label="Language selection">
+      <a href={enTarget} class={`lang-btn ${!isKo ? 'active' : ''}`} id="btnLangEn" aria-label="English">EN</a>
+      <span class="lang-divider">/</span>
+      <a href={koTarget} class={`lang-btn ${isKo ? 'active' : ''}`} id="btnLangKo" aria-label="한국어">KO</a>
+    </div>
+
+    <div class="theme-dropdown" id="themeDropdown">
+      <button class="theme-trigger" id="themeTrigger" aria-label="Toggle Theme">
+        <svg class="theme-icon-svg" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 3v18" />
+          <path d="M12 3a9 9 0 0 1 0 18Z" fill="currentColor" />
+        </svg>
+        <span class="theme-arrow">▼</span>
+      </button>
+      <div class="theme-dropdown-content" id="themeDropdownContent">
+        <button class="theme-dropdown-btn theme-btn" data-theme-val="light" id="btnThemeLight">{isKo ? '라이트' : 'Light'}</button>
+        <button class="theme-dropdown-btn theme-btn" data-theme-val="dark" id="btnThemeDark">{isKo ? '다크' : 'Dark'}</button>
+        <button class="theme-dropdown-btn theme-btn" data-theme-val="system" id="btnThemeSystem">{isKo ? '시스템' : 'System'}</button>
+      </div>
     </div>
   </div>
 </header>

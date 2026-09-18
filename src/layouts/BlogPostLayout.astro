@@ -11,17 +11,21 @@ interface Props {
   author?: string;
   rawBody?: string;
   slug?: string;
+  locale?: 'en' | 'ko';
 }
 
-const { title, description, pubDate, updatedDate, heroImage, author, rawBody = '', slug = '' } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, author, rawBody = '', slug = '', locale = 'en' } = Astro.props;
 
-const formattedDate = pubDate.toLocaleDateString('en-US', {
+const currentLocale = locale || (Astro.url.pathname.startsWith('/ko') ? 'ko' : 'en');
+const isKo = currentLocale === 'ko';
+
+const formattedDate = pubDate.toLocaleDateString(isKo ? 'ko-KR' : 'en-US', {
   year: 'numeric',
-  month: 'long',
+  month: isKo ? 'short' : 'long',
   day: 'numeric',
 });
 
-const postUrl = slug ? `https://gxpsoft.ai/blog/${slug}.html` : Astro.url.href;
+const postUrl = slug ? `https://gxpsoft.ai/${isKo ? 'ko/' : ''}blog/${slug}.html` : Astro.url.href;
 
 const postMarkdown = `---
 title: ${JSON.stringify(title)}
@@ -71,12 +75,13 @@ const blogPostingSchema = {
 ---
 
 <Layout
-  title={`${title} | GxPSoft AI Blog`}
+  title={`${title} | GxPSoft AI ${isKo ? '블로그' : 'Blog'}`}
   description={description}
   canonicalUrl={Astro.url.href}
   ogImage={articleOgImage}
   pageClass="page-blog-post"
   schema={blogPostingSchema}
+  locale={currentLocale}
 >
   <Header slot="header" />
 
@@ -85,7 +90,7 @@ const blogPostingSchema = {
     <textarea id="rawPostMarkdown" style="display: none;" readonly aria-hidden="true">{postMarkdown}</textarea>
 
     <div class="post-top-nav">
-      <a href="/blog.html" class="service-link">← Back to Blog</a>
+      <a href={isKo ? "/ko/blog.html" : "/blog.html"} class="service-link">{isKo ? '← 블로그로 돌아가기' : '← Back to Blog'}</a>
       <button
         type="button"
         class="copy-markdown-btn"
@@ -100,7 +105,7 @@ const blogPostingSchema = {
         <svg class="check-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
           <polyline points="20 6 9 17 4 12"></polyline>
         </svg>
-        <span class="copy-btn-text">Copy Markdown</span>
+        <span class="copy-btn-text">{isKo ? '마크다운 복사' : 'Copy Markdown'}</span>
       </button>
     </div>
 
@@ -114,7 +119,7 @@ const blogPostingSchema = {
         <p class="post-description">{description}</p>
         {updatedDate && (
           <div class="last-updated">
-            Last updated on {updatedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            {isKo ? '최종 수정: ' : 'Last updated on '}{updatedDate.toLocaleDateString(isKo ? 'ko-KR' : 'en-US', { year: 'numeric', month: isKo ? 'short' : 'long', day: 'numeric' })}
           </div>
         )}
       </div>
@@ -126,7 +131,7 @@ const blogPostingSchema = {
 
     <footer class="post-footer">
       <div class="post-footer-actions">
-        <a href="/blog.html" class="service-link">← Back to all posts</a>
+        <a href={isKo ? "/ko/blog.html" : "/blog.html"} class="service-link">{isKo ? '← 전체 기사 목록으로 돌아가기' : '← Back to all posts'}</a>
         <button
           type="button"
           class="copy-markdown-btn"
@@ -141,7 +146,7 @@ const blogPostingSchema = {
           <svg class="check-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
             <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
-          <span class="copy-btn-text">Copy Markdown</span>
+          <span class="copy-btn-text">{isKo ? '마크다운 복사' : 'Copy Markdown'}</span>
         </button>
       </div>
     </footer>
