@@ -3,19 +3,46 @@ import { getCollection, render, type CollectionEntry } from 'astro:content';
 import BlogPostLayout from '../../../layouts/BlogPostLayout.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: post,
-  }));
+  const allPosts = await getCollection('blog');
+  const enPosts = allPosts.filter((p) => p.id.startsWith('en/'));
+  const koMap = new Map(
+    allPosts.filter((p) => p.id.startsWith('ko/')).map((p) => [p.id.replace(/^ko\//, ''), p])
+  );
+
+  const paths = enPosts.map((enPost) => {
+    const slug = enPost.id.replace(/^en\//, '');
+    const koPost = koMap.get(slug);
+    const post = koPost || enPost;
+    const isFallback = !koPost;
+
+    return {
+      params: { slug },
+      props: { post, slug, isFallback },
+    };
+  });
+
+  for (const [slug, koPost] of koMap.entries()) {
+    if (!paths.some((p) => p.params.slug === slug)) {
+      paths.push({
+        params: { slug },
+        props: { post: koPost, slug, isFallback: false },
+      });
+    }
+  }
+
+  return paths;
 }
 
-type Props = CollectionEntry<'blog'>;
+interface Props {
+  post: CollectionEntry<'blog'>;
+  slug: string;
+  isFallback: boolean;
+}
 
-const post = Astro.props;
+const { post, slug, isFallback } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<BlogPostLayout {...post.data} rawBody={post.body} slug={post.id} locale="ko">
+<BlogPostLayout {...post.data} rawBody={post.body} slug={slug} locale="ko" isFallback={isFallback}>
   <Content />
 </BlogPostLayout>

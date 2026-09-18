@@ -3,9 +3,43 @@ import { getCollection } from 'astro:content';
 import Layout from '../../../layouts/Layout.astro';
 import Header from '../../../components/Header.astro';
 
-const posts = (await getCollection('blog')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+const allPosts = await getCollection('blog');
+const enPosts = allPosts.filter((p) => p.id.startsWith('en/'));
+const koMap = new Map(
+  allPosts.filter((p) => p.id.startsWith('ko/')).map((p) => [p.id.replace(/^ko\//, ''), p])
 );
+
+const posts = enPosts.map((enPost) => {
+  const slug = enPost.id.replace(/^en\//, '');
+  const koPost = koMap.get(slug);
+  const isTranslated = !!koPost;
+  const post = koPost || enPost;
+  return {
+    post,
+    slug,
+    isTranslated,
+    pubDate: post.data.pubDate,
+    title: post.data.title,
+    description: post.data.description,
+    author: post.data.author,
+  };
+});
+
+for (const [slug, koPost] of koMap.entries()) {
+  if (!posts.some((p) => p.slug === slug)) {
+    posts.push({
+      post: koPost,
+      slug,
+      isTranslated: true,
+      pubDate: koPost.data.pubDate,
+      title: koPost.data.title,
+      description: koPost.data.description,
+      author: koPost.data.author,
+    });
+  }
+}
+
+posts.sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
 ---
 
 <Layout
@@ -28,25 +62,28 @@ const posts = (await getCollection('blog')).sort(
       {posts.length === 0 ? (
         <p class="no-posts">아직 등록된 기사가 없습니다. 곧 새로운 소식을 전해드리겠습니다!</p>
       ) : (
-        posts.map((post) => (
+        posts.map((item) => (
           <article class="post-card">
             <div class="post-card-meta">
-              <time datetime={post.data.pubDate.toISOString()} class="post-card-date">
-                {post.data.pubDate.toLocaleDateString('ko-KR', {
+              <time datetime={item.pubDate.toISOString()} class="post-card-date">
+                {item.pubDate.toLocaleDateString('ko-KR', {
                   year: 'numeric',
                   month: 'short',
                   day: '2-digit',
                 })}
               </time>
-              {post.data.author && <div class="post-card-author">{post.data.author}</div>}
+              {item.author && <div class="post-card-author">{item.author}</div>}
+              {!item.isTranslated && (
+                <span class="lang-tag" title="한국어 번역 준비 중 (영문 제공)">영문</span>
+              )}
             </div>
             <div class="post-card-body">
               <h2 class="post-card-title">
-                <a href={`/ko/blog/${post.id}.html`} class="post-card-link">
-                  {post.data.title}
+                <a href={`/ko/blog/${item.slug}.html`} class="post-card-link">
+                  {item.title}
                 </a>
               </h2>
-              <p class="post-card-description">{post.data.description}</p>
+              <p class="post-card-description">{item.description}</p>
             </div>
           </article>
         ))
@@ -111,6 +148,19 @@ const posts = (await getCollection('blog')).sort(
     letter-spacing: 0.05em;
     border-left: 1px solid var(--border-color);
     padding-left: 8px;
+  }
+
+  .lang-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(148, 163, 184, 0.12);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+    width: fit-content;
   }
 
   .post-card-title {

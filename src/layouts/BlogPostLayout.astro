@@ -12,9 +12,10 @@ interface Props {
   rawBody?: string;
   slug?: string;
   locale?: 'en' | 'ko';
+  isFallback?: boolean;
 }
 
-const { title, description, pubDate, updatedDate, heroImage, author, rawBody = '', slug = '', locale = 'en' } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, author, rawBody = '', slug = '', locale = 'en', isFallback = false } = Astro.props;
 
 const currentLocale = locale || (Astro.url.pathname.startsWith('/ko') ? 'ko' : 'en');
 const isKo = currentLocale === 'ko';
@@ -108,6 +109,13 @@ const blogPostingSchema = {
         <span class="copy-btn-text">{isKo ? '마크다운 복사' : 'Copy Markdown'}</span>
       </button>
     </div>
+
+    {isKo && isFallback && (
+      <div class="untranslated-notice" role="status">
+        <span class="notice-icon">🌐</span>
+        <span class="notice-text">이 기사는 아직 한국어 번역이 준비되지 않아 영문 원본으로 제공됩니다.</span>
+      </div>
+    )}
 
     <header class="post-header">
       <div class="post-meta">
@@ -511,5 +519,24 @@ const blogPostingSchema = {
     border-radius: 4px;
     border: 1px solid var(--border-color);
     margin: 32px 0;
+  }
+
+  .untranslated-notice {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.75rem 1rem;
+    margin: 1rem 0 1.5rem;
+    background: rgba(234, 179, 8, 0.08);
+    border: 1px solid rgba(234, 179, 8, 0.25);
+    border-radius: 6px;
+    font-size: 0.875rem;
+    color: var(--text-color, #e2e8f0);
+  }
+
+  .untranslated-notice .notice-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+    flex-shrink: 0;
   }
 </style>
