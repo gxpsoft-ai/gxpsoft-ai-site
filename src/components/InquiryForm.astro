@@ -9,9 +9,8 @@ const { locale = 'en' } = Astro.props;
 const isKo = locale === 'ko';
 
 // Cloudflare Turnstile Site Key:
-// Uses PUBLIC_TURNSTILE_SITE_KEY if set, otherwise defaults to Cloudflare's official testing sitekey
-const turnstileSiteKey =
-  import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
+// Only activated when a valid production site key is provided in environment variables
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '';
 
 // Pass banned domains to client script for instant pre-submit validation
 const bannedDomainsArray = Array.from(PUBLIC_EMAIL_DOMAINS);
@@ -229,15 +228,17 @@ const t = isKo ? texts.ko : texts.en;
       </div>
     </div>
 
-    <!-- Cloudflare Turnstile CAPTCHA Widget -->
-    <div class="turnstile-container">
-      <div
-        class="cf-turnstile"
-        data-sitekey={turnstileSiteKey}
-        data-theme="auto"
-        data-size="flexible"
-      ></div>
-    </div>
+    <!-- Cloudflare Turnstile CAPTCHA Widget (Only rendered when PUBLIC_TURNSTILE_SITE_KEY is provided) -->
+    {turnstileSiteKey && (
+      <div class="turnstile-container">
+        <div
+          class="cf-turnstile"
+          data-sitekey={turnstileSiteKey}
+          data-theme="auto"
+          data-size="flexible"
+        ></div>
+      </div>
+    )}
 
     <!-- Submit Section -->
     <div class="form-actions">
@@ -252,8 +253,10 @@ const t = isKo ? texts.ko : texts.en;
   </form>
 </div>
 
-<!-- Cloudflare Turnstile API Script -->
-<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<!-- Cloudflare Turnstile API Script (Loaded conditionally) -->
+{turnstileSiteKey && (
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+)}
 
 <script is:inline define:vars={{ bannedDomainsArray, locale, t }}>
   document.addEventListener('DOMContentLoaded', () => {
