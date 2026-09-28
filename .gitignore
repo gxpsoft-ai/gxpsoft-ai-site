@@ -26,3 +26,8 @@ dist-ssr/
 *.njsproj
 *.sln
 *.sw?
+
+# Framework & Tooling Cache
+.astro/
+.wrangler/
+.dev.vars

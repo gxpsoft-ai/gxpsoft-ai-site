@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
+import InquiryForm from '../../components/InquiryForm.astro';
 
 const homeSchema = {
   "@context": "https://schema.org",
@@ -48,19 +49,24 @@ const homeSchema = {
   <section id="contactSection">
     <h2 class="section-title">연락 및 협업 문의</h2>
     <p class="section-text">
-      파트너십 기회, 맞춤형 배포 구성, 일반 기술 지원 문의:
+      파트너십 기회, 맞춤형 배포 구성, 엔터프라이즈 스킬 개발 문의는 아래 양식을 작성해 주시거나 직접 연락해 주십시오:
     </p>
-    <p class="section-text" style="margin-top: 8px;">
-      이메일:
-      <a href="mailto:info@saram.consulting" class="service-link" id="emailLink">info@saram.consulting</a>
-    </p>
-    <p class="section-text">
-      전화:
-      <a href="tel:+19253946606" class="service-link" id="phoneLink">925 394-6606</a>
-    </p>
-    <p class="section-text">
-      GitHub:
-      <a href="https://github.com/gxpsoft-ai" class="service-link" id="gitLink">@gxpsoft-ai</a>
-    </p>
+
+    <InquiryForm locale="ko" />
+
+    <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+      <p class="section-text">
+        이메일:
+        <a href="mailto:info@saram.consulting" class="service-link" id="emailLink">info@saram.consulting</a>
+      </p>
+      <p class="section-text">
+        전화:
+        <a href="tel:+19253946606" class="service-link" id="phoneLink">925 394-6606</a>
+      </p>
+      <p class="section-text">
+        GitHub:
+        <a href="https://github.com/gxpsoft-ai" class="service-link" id="gitLink">@gxpsoft-ai</a>
+      </p>
+    </div>
   </section>
 </Layout>

@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
+import InquiryForm from '../components/InquiryForm.astro';
 
 const homeSchema = {
   "@context": "https://schema.org",
@@ -47,20 +48,25 @@ const homeSchema = {
   <section id="contactSection">
     <h2 class="section-title">Contact & Collaboration</h2>
     <p class="section-text">
-      For partnership opportunities, custom deployment configurations, or general support:
+      For partnership opportunities, custom deployment configurations, or enterprise skills:
     </p>
-    <p class="section-text" style="margin-top: 8px;">
-      Email:
-      <a href="mailto:info@saram.consulting" class="service-link" id="emailLink">info@saram.consulting</a>
-    </p>
-    <p class="section-text">
-      Phone:
-      <a href="tel:+19253946606" class="service-link" id="phoneLink">925 394-6606</a>
-    </p>
-    <p class="section-text">
-      GitHub:
-      <a href="https://github.com/gxpsoft-ai" class="service-link" id="gitLink">@gxpsoft-ai</a>
-    </p>
+
+    <InquiryForm locale="en" />
+
+    <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+      <p class="section-text">
+        Direct Email:
+        <a href="mailto:info@saram.consulting" class="service-link" id="emailLink">info@saram.consulting</a>
+      </p>
+      <p class="section-text">
+        Phone:
+        <a href="tel:+19253946606" class="service-link" id="phoneLink">925 394-6606</a>
+      </p>
+      <p class="section-text">
+        GitHub:
+        <a href="https://github.com/gxpsoft-ai" class="service-link" id="gitLink">@gxpsoft-ai</a>
+      </p>
+    </div>
   </section>
 </Layout>
 

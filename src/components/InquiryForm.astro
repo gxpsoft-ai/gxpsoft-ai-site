@@ -1,0 +1,746 @@
+---
+import { PUBLIC_EMAIL_DOMAINS } from '../utils/emailValidation';
+
+interface Props {
+  locale?: 'en' | 'ko';
+}
+
+const { locale = 'en' } = Astro.props;
+const isKo = locale === 'ko';
+
+// Cloudflare Turnstile Site Key:
+// Uses PUBLIC_TURNSTILE_SITE_KEY if set, otherwise defaults to Cloudflare's official testing sitekey
+const turnstileSiteKey =
+  import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
+
+// Pass banned domains to client script for instant pre-submit validation
+const bannedDomainsArray = Array.from(PUBLIC_EMAIL_DOMAINS);
+
+const texts = {
+  en: {
+    heading: 'Send an Inquiry',
+    subtitle: 'Automate your critical systems and GxP routines with autonomous AI agents. Contact our team for enterprise deployment and custom skill development.',
+    nameLabel: 'Full Name',
+    namePlaceholder: 'e.g. Dr. Jane Doe',
+    companyLabel: 'Company / Organization',
+    companyPlaceholder: 'e.g. BioPharma Labs Inc.',
+    emailLabel: 'Business Email',
+    emailPlaceholder: 'jane.doe@company.com',
+    emailNote: 'Corporate email required. Public domains (Gmail, Hotmail, etc.) are restricted.',
+    phoneLabel: 'Phone Number (Optional)',
+    phonePlaceholder: '+1 555-0199',
+    typeLabel: 'Inquiry Topic',
+    typeOptions: [
+      { value: 'Enterprise AI Agents & Skills', label: 'Enterprise AI Agents & Skills' },
+      { value: 'GxP / 21 CFR Part 11 Compliance', label: 'GxP / 21 CFR Part 11 Compliance' },
+      { value: 'Custom System Integration', label: 'Custom System Integration & Architecture' },
+      { value: 'Partnership & Collaboration', label: 'Partnership & Collaboration' },
+      { value: 'General Support & Other', label: 'General Support & Other' },
+    ],
+    messageLabel: 'Inquiry Details',
+    messagePlaceholder: 'Please describe your system requirements, compliance scope, or project goals...',
+    submitBtn: 'Submit Inquiry',
+    submittingBtn: 'Submitting via Cloudflare...',
+    successTitle: 'Inquiry Dispatched Successfully',
+    successMsg: 'Thank you for reaching out. Your request has been securely processed and sent to our team. We will review your requirements and respond within 1-2 business days.',
+    sendAnother: 'Send another message',
+    publicEmailError: 'Public email providers (Gmail, Hotmail, Yahoo, etc.) are blocked. Please provide a verified corporate email.',
+    requiredError: 'Please fill out all required fields.',
+  },
+  ko: {
+    heading: '문의하기',
+    subtitle: '자율형 AI 에이전트를 통한 중요 시스템 자동화 및 GxP 규제 준수. 엔터프라이즈 맞춤형 배포 및 에이전트 스킬 개발에 대해 문의해 주세요.',
+    nameLabel: '성함 / 담당자명',
+    namePlaceholder: '예: 홍길동',
+    companyLabel: '회사명 / 소속 기관',
+    companyPlaceholder: '예: (주)바이오팜랩스',
+    emailLabel: '회사 / 업무용 이메일',
+    emailPlaceholder: 'gildong.hong@company.com',
+    emailNote: '회사 도메인 이메일 필수. 공용 메일(Gmail, Hotmail 등)은 제한됩니다.',
+    phoneLabel: '연락처 (선택 사항)',
+    phonePlaceholder: '010-1234-5678',
+    typeLabel: '문의 유형',
+    typeOptions: [
+      { value: '엔터프라이즈 AI 에이전트 및 스킬', label: '엔터프라이즈 AI 에이전트 및 스킬' },
+      { value: 'GxP / 21 CFR Part 11 규제 준수', label: 'GxP / 21 CFR Part 11 규제 준수' },
+      { value: '맞춤형 시스템 구축 및 통합', label: '맞춤형 시스템 구축 및 통합' },
+      { value: '파트너십 및 사업 제휴', label: '파트너십 및 사업 제휴' },
+      { value: '기타 일반 기술 문의', label: '기타 일반 기술 문의' },
+    ],
+    messageLabel: '문의 내용',
+    messagePlaceholder: '프로젝트 목표, 대상 시스템 환경, 규제 요건 등을 자유롭게 작성해 주세요...',
+    submitBtn: '문의 제출하기',
+    submittingBtn: '클라우드플레어를 통해 전송 중...',
+    successTitle: '문의가 안전하게 접수되었습니다',
+    successMsg: '보내주신 내용이 담당 팀에 안전하게 전달되었습니다. 검토 후 영업일 기준 1~2일 내로 회신드리겠습니다.',
+    sendAnother: '추가 문의 작성하기',
+    publicEmailError: '공용 이메일(Gmail, Hotmail, Naver 등)은 접수되지 않습니다. 회사 이메일을 입력해 주세요.',
+    requiredError: '필수 항목을 모두 입력해 주세요.',
+  },
+};
+
+const t = isKo ? texts.ko : texts.en;
+---
+
+<div class="inquiry-card" id="inquiryComponent">
+  <div class="inquiry-header">
+    <div class="inquiry-badge">
+      <span class="badge-dot"></span>
+      {isKo ? '클라우드플레어 서버 보안 검증' : 'Cloudflare Protected & Verified'}
+    </div>
+    <h3 class="inquiry-title">{t.heading}</h3>
+    <p class="inquiry-subtitle">{t.subtitle}</p>
+  </div>
+
+  <!-- Success Notification Box -->
+  <div class="inquiry-status success-box" id="inquirySuccess" style="display: none;" role="alert">
+    <div class="status-icon">✓</div>
+    <div class="status-content">
+      <h4 class="status-heading">{t.successTitle}</h4>
+      <p class="status-text">{t.successMsg}</p>
+      <button type="button" class="btn-secondary" id="btnResetForm" style="margin-top: 14px;">
+        {t.sendAnother}
+      </button>
+    </div>
+  </div>
+
+  <!-- Error Banner -->
+  <div class="inquiry-status error-box" id="inquiryError" style="display: none;" role="alert">
+    <div class="status-icon">!</div>
+    <div class="status-content">
+      <h4 class="status-heading" id="errorHeading">{isKo ? '오류가 발생했습니다' : 'Submission Error'}</h4>
+      <p class="status-text" id="errorMessage"></p>
+    </div>
+  </div>
+
+  <!-- Inquiry Form -->
+  <form id="inquiryForm" class="inquiry-form" method="POST" action="/api/inquiry" novalidate>
+    <!-- Hidden Anti-Spam Honeypots (Must stay empty) -->
+    <div class="hp-trap" aria-hidden="true">
+      <input type="text" name="_hp_company_url" id="hpCompanyUrl" tabindex="-1" autocomplete="off" />
+      <input type="text" name="_hp_fax" id="hpFax" tabindex="-1" autocomplete="off" />
+      <input type="text" name="_hp_title" id="hpTitle" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <!-- Hidden Timestamp Token (Prevents instant automated bot post) -->
+    <input type="hidden" name="_form_ts" id="formTimestamp" value="" />
+    <input type="hidden" name="locale" value={locale} />
+
+    <div class="form-grid">
+      <!-- Name Field -->
+      <div class="form-group">
+        <label for="inquiryName" class="form-label">
+          {t.nameLabel} <span class="required">*</span>
+        </label>
+        <input
+          type="text"
+          id="inquiryName"
+          name="name"
+          class="form-input"
+          placeholder={t.namePlaceholder}
+          required
+          minlength="2"
+          maxlength="100"
+        />
+      </div>
+
+      <!-- Company Field -->
+      <div class="form-group">
+        <label for="inquiryCompany" class="form-label">
+          {t.companyLabel} <span class="required">*</span>
+        </label>
+        <input
+          type="text"
+          id="inquiryCompany"
+          name="company"
+          class="form-input"
+          placeholder={t.companyPlaceholder}
+          required
+          minlength="2"
+          maxlength="100"
+        />
+      </div>
+
+      <!-- Business Email Field (Strict Corporate Validation) -->
+      <div class="form-group form-group-full">
+        <label for="inquiryEmail" class="form-label">
+          {t.emailLabel} <span class="required">*</span>
+        </label>
+        <input
+          type="email"
+          id="inquiryEmail"
+          name="email"
+          class="form-input"
+          placeholder={t.emailPlaceholder}
+          required
+          maxlength="100"
+          autocomplete="email"
+        />
+        <div class="field-feedback" id="emailFeedback">
+          <span class="note-text">{t.emailNote}</span>
+        </div>
+      </div>
+
+      <!-- Phone Field -->
+      <div class="form-group">
+        <label for="inquiryPhone" class="form-label">
+          {t.phoneLabel}
+        </label>
+        <input
+          type="tel"
+          id="inquiryPhone"
+          name="phone"
+          class="form-input"
+          placeholder={t.phonePlaceholder}
+          maxlength="40"
+        />
+      </div>
+
+      <!-- Inquiry Type Field -->
+      <div class="form-group">
+        <label for="inquiryType" class="form-label">
+          {t.typeLabel} <span class="required">*</span>
+        </label>
+        <div class="select-wrapper">
+          <select id="inquiryType" name="inquiryType" class="form-input form-select" required>
+            {t.typeOptions.map((opt) => (
+              <option value={opt.value}>{opt.label}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <!-- Message Field -->
+      <div class="form-group form-group-full">
+        <label for="inquiryMessage" class="form-label">
+          {t.messageLabel} <span class="required">*</span>
+        </label>
+        <textarea
+          id="inquiryMessage"
+          name="message"
+          class="form-input form-textarea"
+          rows="4"
+          placeholder={t.messagePlaceholder}
+          required
+          minlength="10"
+          maxlength="4000"
+        ></textarea>
+        <div class="char-count" id="charCount">0 / 4,000</div>
+      </div>
+    </div>
+
+    <!-- Cloudflare Turnstile CAPTCHA Widget -->
+    <div class="turnstile-container">
+      <div
+        class="cf-turnstile"
+        data-sitekey={turnstileSiteKey}
+        data-theme="auto"
+        data-size="flexible"
+      ></div>
+    </div>
+
+    <!-- Submit Section -->
+    <div class="form-actions">
+      <button type="submit" class="btn-submit" id="btnSubmit">
+        <span class="btn-text">{t.submitBtn}</span>
+        <span class="btn-spinner" style="display: none;"></span>
+      </button>
+      <span class="security-note">
+        🔒 {isKo ? 'TLS 암호화 및 Cloudflare 스팸 방지 기술 적용' : 'TLS Encrypted & Cloudflare Anti-Abuse Protected'}
+      </span>
+    </div>
+  </form>
+</div>
+
+<!-- Cloudflare Turnstile API Script -->
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<script is:inline define:vars={{ bannedDomainsArray, locale, t }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('inquiryForm');
+    const successBox = document.getElementById('inquirySuccess');
+    const errorBox = document.getElementById('inquiryError');
+    const errorMessage = document.getElementById('errorMessage');
+    const emailInput = document.getElementById('inquiryEmail');
+    const emailFeedback = document.getElementById('emailFeedback');
+    const messageInput = document.getElementById('inquiryMessage');
+    const charCount = document.getElementById('charCount');
+    const submitBtn = document.getElementById('btnSubmit');
+    const btnText = submitBtn?.querySelector('.btn-text');
+    const btnSpinner = submitBtn?.querySelector('.btn-spinner');
+    const btnReset = document.getElementById('btnResetForm');
+    const tsInput = document.getElementById('formTimestamp');
+
+    // Initialize mount timestamp for time-based spam check
+    if (tsInput) {
+      tsInput.value = Date.now().toString();
+    }
+
+    const publicDomains = new Set(bannedDomainsArray);
+
+    function checkBusinessEmail(emailStr) {
+      if (!emailStr) return { valid: false, message: t.requiredError };
+      const trimmed = emailStr.trim().toLowerCase();
+      const parts = trimmed.split('@');
+      if (parts.length !== 2 || !parts[1] || !parts[1].includes('.')) {
+        return { valid: false, message: locale === 'ko' ? '올바른 이메일 형식을 입력해 주세요.' : 'Please enter a valid email format.' };
+      }
+      const domain = parts[1];
+      if (publicDomains.has(domain)) {
+        return {
+          valid: false,
+          isPublic: true,
+          message: locale === 'ko'
+            ? `공용 이메일(@${domain})은 지원되지 않습니다. 회사/업무용 이메일을 입력해 주세요.`
+            : `Public email accounts (@${domain}) are blocked. Please use your corporate email.`
+        };
+      }
+      return { valid: true };
+    }
+
+    // Real-time email validation on blur & input
+    function validateEmailField() {
+      const email = emailInput.value.trim();
+      if (!email) {
+        emailInput.classList.remove('input-invalid', 'input-valid');
+        emailFeedback.innerHTML = `<span class="note-text">${t.emailNote}</span>`;
+        return false;
+      }
+      const check = checkBusinessEmail(email);
+      if (!check.valid) {
+        emailInput.classList.add('input-invalid');
+        emailInput.classList.remove('input-valid');
+        emailFeedback.innerHTML = `<span class="feedback-error">⚠️ ${check.message}</span>`;
+        return false;
+      } else {
+        emailInput.classList.remove('input-invalid');
+        emailInput.classList.add('input-valid');
+        emailFeedback.innerHTML = `<span class="feedback-success">✓ ${locale === 'ko' ? '기업 도메인 확인 완료' : 'Valid corporate domain'}</span>`;
+        return true;
+      }
+    }
+
+    emailInput?.addEventListener('blur', validateEmailField);
+    emailInput?.addEventListener('input', () => {
+      if (emailInput.classList.contains('input-invalid')) {
+        validateEmailField();
+      }
+    });
+
+    // Character counter for textarea
+    messageInput?.addEventListener('input', () => {
+      const len = messageInput.value.length;
+      if (charCount) {
+        charCount.textContent = `${len.toLocaleString()} / 4,000`;
+      }
+    });
+
+    // Reset button
+    btnReset?.addEventListener('click', () => {
+      form.reset();
+      if (tsInput) tsInput.value = Date.now().toString();
+      successBox.style.display = 'none';
+      errorBox.style.display = 'none';
+      form.style.display = 'block';
+      if (emailFeedback) emailFeedback.innerHTML = `<span class="note-text">${t.emailNote}</span>`;
+      emailInput?.classList.remove('input-invalid', 'input-valid');
+      if (charCount) charCount.textContent = '0 / 4,000';
+    });
+
+    // AJAX Submission Handler
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorBox.style.display = 'none';
+
+      // 1. Client-side email validation check
+      const emailCheck = checkBusinessEmail(emailInput.value);
+      if (!emailCheck.valid) {
+        validateEmailField();
+        emailInput.focus();
+        errorMessage.textContent = emailCheck.message;
+        errorBox.style.display = 'flex';
+        return;
+      }
+
+      // 2. Required fields check
+      const name = document.getElementById('inquiryName')?.value.trim();
+      const company = document.getElementById('inquiryCompany')?.value.trim();
+      const message = messageInput?.value.trim();
+
+      if (!name || !company || !message) {
+        errorMessage.textContent = t.requiredError;
+        errorBox.style.display = 'flex';
+        return;
+      }
+
+      // UI loading state
+      if (submitBtn) submitBtn.disabled = true;
+      if (btnText) btnText.textContent = t.submittingBtn;
+      if (btnSpinner) btnSpinner.style.display = 'inline-block';
+
+      try {
+        const formData = new FormData(form);
+
+        const response = await fetch('/api/inquiry', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          form.style.display = 'none';
+          successBox.style.display = 'flex';
+          successBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+          errorMessage.textContent = result.error || (locale === 'ko' ? '제출에 실패했습니다. 다시 시도해 주세요.' : 'Failed to submit inquiry.');
+          errorBox.style.display = 'flex';
+          errorBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      } catch (err) {
+        console.error('Submission error:', err);
+        errorMessage.textContent = locale === 'ko'
+          ? '네트워크 연결 또는 서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.'
+          : 'Network error occurred. Please check your connection and try again.';
+        errorBox.style.display = 'flex';
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+        if (btnText) btnText.textContent = t.submitBtn;
+        if (btnSpinner) btnSpinner.style.display = 'none';
+      }
+    });
+  });
+</script>
+
+<style>
+  .inquiry-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 32px;
+    margin-top: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition: border-color 0.2s ease;
+  }
+
+  .inquiry-card:hover {
+    border-color: rgba(255, 255, 255, 0.16);
+  }
+
+  :global(html[data-theme="light"]) .inquiry-card:hover {
+    border-color: rgba(0, 0, 0, 0.16);
+  }
+
+  .inquiry-header {
+    margin-bottom: 24px;
+  }
+
+  .inquiry-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+
+  :global(html[data-theme="light"]) .inquiry-badge {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    background-color: #10b981; /* Emerald green */
+    border-radius: 50%;
+    box-shadow: 0 0 6px #10b981;
+  }
+
+  .inquiry-title {
+    font-family: var(--font-serif);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 8px;
+  }
+
+  .inquiry-subtitle {
+    color: var(--text-muted);
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 680px;
+  }
+
+  /* Status notifications */
+  .inquiry-status {
+    padding: 16px 20px;
+    border-radius: 6px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .success-box {
+    background-color: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    color: #10b981;
+  }
+
+  .error-box {
+    background-color: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    color: #ef4444;
+  }
+
+  .status-icon {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1;
+    padding-top: 2px;
+  }
+
+  .status-content {
+    flex: 1;
+  }
+
+  .status-heading {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: inherit;
+  }
+
+  .status-text {
+    font-size: 13px;
+    color: var(--text-color);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* Form Layout */
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 640px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .form-group-full {
+    grid-column: 1 / -1;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .form-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-color);
+    letter-spacing: 0.02em;
+  }
+
+  .required {
+    color: #ef4444;
+  }
+
+  .form-input {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    font-family: inherit;
+    font-size: 13px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+  }
+
+  :global(html[data-theme="light"]) .form-input {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+
+  .form-input:focus {
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.06);
+  }
+
+  :global(html[data-theme="light"]) .form-input:focus {
+    border-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.06);
+  }
+
+  .form-input.input-invalid {
+    border-color: #ef4444 !important;
+    background-color: rgba(239, 68, 68, 0.03);
+  }
+
+  .form-input.input-valid {
+    border-color: rgba(16, 185, 129, 0.5) !important;
+  }
+
+  .select-wrapper {
+    position: relative;
+  }
+
+  .form-select {
+    width: 100%;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23a1a1aa%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px top 50%;
+    background-size: 10px auto;
+    padding-right: 36px;
+  }
+
+  .form-select option {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .form-textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .field-feedback {
+    font-size: 11px;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+  }
+
+  .note-text {
+    color: var(--text-muted);
+  }
+
+  :global(.feedback-error) {
+    color: #ef4444;
+    font-weight: 500;
+  }
+
+  :global(.feedback-success) {
+    color: #10b981;
+    font-weight: 500;
+  }
+
+  .char-count {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: right;
+    margin-top: 2px;
+  }
+
+  /* Cloudflare Turnstile */
+  .turnstile-container {
+    margin-bottom: 20px;
+    min-height: 65px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Form Actions */
+  .form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .btn-submit {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 4px;
+    padding: 10px 24px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-submit:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+
+  .btn-submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+
+  .btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .btn-spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-top-color: currentColor;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .security-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  /* Honeypot trap styling: invisible to humans, irresistible to naive spam scrapers */
+  .hp-trap {
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    width: 0 !important;
+    height: 0 !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+  }
+</style>
