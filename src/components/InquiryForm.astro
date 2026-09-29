@@ -19,6 +19,9 @@ const texts = {
   en: {
     heading: 'Send an Inquiry',
     subtitle: 'Automate your critical systems and GxP routines with autonomous AI agents. Contact our team for enterprise deployment and custom skill development.',
+    openBtn: 'Send an Inquiry',
+    closeBtn: 'Close Inquiry',
+    toggleCloseBtn: 'Close Form',
     nameLabel: 'Full Name',
     namePlaceholder: 'e.g. Dr. Jane Doe',
     companyLabel: 'Company / Organization',
@@ -49,6 +52,9 @@ const texts = {
   ko: {
     heading: '문의하기',
     subtitle: '자율형 AI 에이전트를 통한 중요 시스템 자동화 및 GxP 규제 준수. 엔터프라이즈 맞춤형 배포 및 에이전트 스킬 개발에 대해 문의해 주세요.',
+    openBtn: '문의하기',
+    closeBtn: '문의 닫기',
+    toggleCloseBtn: '양식 닫기',
     nameLabel: '성함 / 담당자명',
     namePlaceholder: '예: 홍길동',
     companyLabel: '회사명 / 소속 기관',
@@ -81,27 +87,66 @@ const texts = {
 const t = isKo ? texts.ko : texts.en;
 ---
 
-<div class="inquiry-card" id="inquiryComponent">
-  <div class="inquiry-header">
-    <div class="inquiry-badge">
-      <span class="badge-dot"></span>
-      {isKo ? '클라우드플레어 서버 보안 검증' : 'Cloudflare Protected & Verified'}
-    </div>
-    <h3 class="inquiry-title">{t.heading}</h3>
-    <p class="inquiry-subtitle">{t.subtitle}</p>
+<div class="inquiry-wrapper" id="inquiryWrapper">
+  <!-- Trigger Button: Initially visible -->
+  <div class="inquiry-toggle-bar">
+    <button
+      type="button"
+      class="inquiry-trigger-btn"
+      id="inquiryToggleBtn"
+      aria-expanded="false"
+      aria-controls="inquiryComponent"
+    >
+      <svg class="trigger-icon-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+      </svg>
+      <span class="trigger-label">{t.openBtn}</span>
+      <span class="trigger-chevron" aria-hidden="true">▾</span>
+    </button>
   </div>
 
-  <!-- Success Notification Box -->
-  <div class="inquiry-status success-box" id="inquirySuccess" style="display: none;" role="alert">
-    <div class="status-icon">✓</div>
-    <div class="status-content">
-      <h4 class="status-heading">{t.successTitle}</h4>
-      <p class="status-text">{t.successMsg}</p>
-      <button type="button" class="btn-secondary" id="btnResetForm" style="margin-top: 14px;">
-        {t.sendAnother}
-      </button>
+  <!-- Inquiry Card: Hidden until button is clicked -->
+  <div class="inquiry-card" id="inquiryComponent" style="display: none;" role="region" aria-labelledby="inquiryCardHeading">
+    <div class="inquiry-header">
+      <div class="inquiry-header-row">
+        <div class="inquiry-badge">
+          <span class="badge-dot"></span>
+          {isKo ? '클라우드플레어 서버 보안 검증' : 'Cloudflare Protected & Verified'}
+        </div>
+        <button
+          type="button"
+          class="inquiry-close-btn"
+          id="inquiryCloseBtn"
+          aria-label={t.closeBtn}
+          title={t.closeBtn}
+        >
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <h3 class="inquiry-title" id="inquiryCardHeading">{t.heading}</h3>
+      <p class="inquiry-subtitle">{t.subtitle}</p>
     </div>
-  </div>
+
+    <!-- Success Notification Box -->
+    <div class="inquiry-status success-box" id="inquirySuccess" style="display: none;" role="alert">
+      <div class="status-icon">✓</div>
+      <div class="status-content">
+        <h4 class="status-heading">{t.successTitle}</h4>
+        <p class="status-text">{t.successMsg}</p>
+        <div style="display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap;">
+          <button type="button" class="btn-secondary" id="btnResetForm">
+            {t.sendAnother}
+          </button>
+          <button type="button" class="btn-secondary" id="btnCloseSuccess">
+            {t.closeBtn}
+          </button>
+        </div>
+      </div>
+    </div>
 
   <!-- Error Banner -->
   <div class="inquiry-status error-box" id="inquiryError" style="display: none;" role="alert">
@@ -251,6 +296,7 @@ const t = isKo ? texts.ko : texts.en;
       </span>
     </div>
   </form>
+  </div>
 </div>
 
 <!-- Cloudflare Turnstile API Script (Loaded conditionally) -->
@@ -260,6 +306,11 @@ const t = isKo ? texts.ko : texts.en;
 
 <script is:inline define:vars={{ bannedDomainsArray, locale, t }}>
   document.addEventListener('DOMContentLoaded', () => {
+    const toggleBtn = document.getElementById('inquiryToggleBtn');
+    const inquiryCard = document.getElementById('inquiryComponent');
+    const closeBtn = document.getElementById('inquiryCloseBtn');
+    const closeSuccessBtn = document.getElementById('btnCloseSuccess');
+
     const form = document.getElementById('inquiryForm');
     const successBox = document.getElementById('inquirySuccess');
     const errorBox = document.getElementById('inquiryError');
@@ -273,6 +324,76 @@ const t = isKo ? texts.ko : texts.en;
     const btnSpinner = submitBtn?.querySelector('.btn-spinner');
     const btnReset = document.getElementById('btnResetForm');
     const tsInput = document.getElementById('formTimestamp');
+
+    function openInquiry(shouldFocus = true) {
+      if (!inquiryCard || !toggleBtn) return;
+      inquiryCard.style.display = 'block';
+      inquiryCard.classList.add('inquiry-card-visible');
+      toggleBtn.setAttribute('aria-expanded', 'true');
+      toggleBtn.classList.add('active');
+      const label = toggleBtn.querySelector('.trigger-label');
+      if (label) label.textContent = t.toggleCloseBtn || t.closeBtn;
+      const chevron = toggleBtn.querySelector('.trigger-chevron');
+      if (chevron) chevron.textContent = '▴';
+
+      if (shouldFocus) {
+        requestAnimationFrame(() => {
+          const firstInput = document.getElementById('inquiryName');
+          if (firstInput) {
+            firstInput.focus();
+          }
+        });
+      }
+    }
+
+    function closeInquiry(focusToggle = true) {
+      if (!inquiryCard || !toggleBtn) return;
+      inquiryCard.style.display = 'none';
+      inquiryCard.classList.remove('inquiry-card-visible');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      toggleBtn.classList.remove('active');
+      const label = toggleBtn.querySelector('.trigger-label');
+      if (label) label.textContent = t.openBtn;
+      const chevron = toggleBtn.querySelector('.trigger-chevron');
+      if (chevron) chevron.textContent = '▾';
+
+      if (focusToggle) {
+        toggleBtn.focus();
+      }
+    }
+
+    toggleBtn?.addEventListener('click', () => {
+      const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+      if (isExpanded) {
+        closeInquiry(false);
+      } else {
+        openInquiry(true);
+      }
+    });
+
+    closeBtn?.addEventListener('click', () => {
+      closeInquiry(true);
+    });
+
+    closeSuccessBtn?.addEventListener('click', () => {
+      closeInquiry(true);
+    });
+
+    inquiryCard?.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeInquiry(true);
+      }
+    });
+
+    // Support opening automatically if hash is #inquiry, #send-inquiry, or #inquiryComponent
+    if (window.location.hash === '#inquiry' || window.location.hash === '#send-inquiry' || window.location.hash === '#inquiryComponent') {
+      openInquiry(false);
+    }
+    window.addEventListener('hashchange', () => {
+      if (window.location.hash === '#inquiry' || window.location.hash === '#send-inquiry' || window.location.hash === '#inquiryComponent') {
+        openInquiry(true);
+      }
+    });
 
     // Initialize mount timestamp for time-based spam check
     if (tsInput) {
@@ -419,14 +540,139 @@ const t = isKo ? texts.ko : texts.en;
 </script>
 
 <style>
+  .inquiry-wrapper {
+    margin-top: 14px;
+    margin-bottom: 14px;
+  }
+
+  .inquiry-toggle-bar {
+    display: flex;
+    align-items: center;
+  }
+
+  .inquiry-trigger-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    border: 1px solid var(--text-color);
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  :global(html[data-theme="light"]) .inquiry-trigger-btn {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .inquiry-trigger-btn:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+  }
+
+  .inquiry-trigger-btn:active {
+    transform: translateY(0);
+  }
+
+  .inquiry-trigger-btn:focus-visible {
+    outline: 2px solid var(--text-color);
+    outline-offset: 3px;
+  }
+
+  .inquiry-trigger-btn.active {
+    background-color: var(--card-bg-hover);
+    color: var(--text-color);
+    border-color: var(--border-color);
+    box-shadow: none;
+  }
+
+  .inquiry-trigger-btn.active:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  :global(html[data-theme="light"]) .inquiry-trigger-btn.active:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .trigger-icon-svg {
+    flex-shrink: 0;
+  }
+
+  .trigger-chevron {
+    font-size: 11px;
+    margin-left: 2px;
+    opacity: 0.8;
+  }
+
+  .inquiry-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .inquiry-close-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+  }
+
+  .inquiry-close-btn:hover {
+    color: var(--text-color);
+    border-color: rgba(255, 255, 255, 0.25);
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  :global(html[data-theme="light"]) .inquiry-close-btn:hover {
+    border-color: rgba(0, 0, 0, 0.25);
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+
+  .inquiry-close-btn:focus-visible {
+    outline: 2px solid var(--text-color);
+    outline-offset: 2px;
+  }
+
   .inquiry-card {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 32px;
-    margin-top: 24px;
+    margin-top: 18px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     transition: border-color 0.2s ease;
+  }
+
+  .inquiry-card-visible {
+    animation: inquiryFadeIn 0.22s ease-out;
+  }
+
+  @keyframes inquiryFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .inquiry-card:hover {
@@ -454,7 +700,7 @@ const t = isKo ? texts.ko : texts.en;
     border: 1px solid var(--border-color);
     padding: 4px 10px;
     border-radius: 20px;
-    margin-bottom: 12px;
+    margin-bottom: 0;
   }
 
   :global(html[data-theme="light"]) .inquiry-badge {
